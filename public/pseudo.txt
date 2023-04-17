@@ -1,0 +1,14 @@
+home{
+    account registration(show v-if account is false){
+        username,
+        email,
+        password
+    }
+    home page{
+        content
+    }
+}
+
+about{
+    description
+}
