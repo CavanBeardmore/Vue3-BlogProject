@@ -1,14 +1,53 @@
-home{
-    account registration(show v-if account is false){
-        username,
-        email,
-        password
-    }
+account registration(show v-if account is false){
+    username,
+    email,
+    password,
     home page{
-        content
+        navbar{
+            blog home,
+            blog posts,
+            about,
+            account
+        },
+        blog home {
+            details 
+        }
+    },
+},
+blog posts{
+    navbar{
+        blog home,
+        blog posts,
+        about,
+        account
     }
-}
-
+    post{
+        content,
+        tags,
+        interactions,
+        comments
+    },
+    search{
+        filter blogs by keyword or tag
+    }
+},
 about{
     description
+},
+account{
+    details,
+    edit details,
+    delete account
+}
+
+account types{
+    admin{
+        can view blog posts, interact, delete users, and blog posts
+    },
+    creator {
+        can view blog posts, interact, create blogs and delete own blog posts
+    },
+    user{
+        can view blog posts and interact
+    }
 }
