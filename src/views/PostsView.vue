@@ -3,8 +3,16 @@
 </template>
 
 <script>
-export default {
+import { useStore } from 'vuex';
+import { ref, computed } from 'vue';
 
+export default {
+  setup() {
+    const store = useStore()
+
+
+    
+  }
 }
 </script>
 
