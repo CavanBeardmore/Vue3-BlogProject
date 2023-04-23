@@ -13,8 +13,11 @@
     Account type: {{activeUser.acctype}}
   </p>
   <br>
-  <h3> All accounts </h3>
   <div v-if="activeUser.acctype === 'admin'">
+    <h3> All accounts </h3>
+    <div>
+      <h4> Total users: {{totalUsers}} </h4>
+    </div>
     <div v-for="user in users" :key="user.usern">
       <p>
         Username: {{user.usern}}
@@ -51,6 +54,8 @@ export default {
 
     const selectedUser = ref('')
 
+    const totalUsers = computed(() => store.getters.totalUsers)
+
     const errorMsg = computed(() => store.state.errorMsg)
 
     function deleteUser() {
@@ -58,7 +63,7 @@ export default {
       selectedUser.value = ''
     }
 
-    return {users, selectedUser, activeUser, errorMsg, deleteUser}
+    return {users, selectedUser, totalUsers, activeUser, errorMsg, deleteUser}
     
   }
 }

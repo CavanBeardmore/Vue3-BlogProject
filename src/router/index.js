@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
 import PostsView from '../views/PostsView.vue'
 import AccountView from '../views/AccountView.vue'
+import store from '../store.js'
 
 const routes = [
   {
@@ -14,22 +15,34 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/about',
     name: 'about',
-    component: AboutView
+    component: AboutView,
+    meta: {
+      requiresAuth: true
+    }    
   },
   {
     path: '/posts',
     name: 'posts',
-    component: PostsView
+    component: PostsView,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/account',
     name: 'account',
-    component: AccountView
+    component: AccountView,
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
@@ -37,5 +50,13 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !store.getters.isLoggedIn) {
+    next('/');
+  } else {
+    next();
+  }
+});
 
 export default router

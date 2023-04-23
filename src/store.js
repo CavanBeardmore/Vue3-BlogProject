@@ -5,9 +5,17 @@ const store = createStore({
                     {usern: 'Phil', email: 'phil@hotmail.com', passw: 'kangaroo123', acctype: 'creator'},
                     {usern: 'John', email: 'john@hotmail.com', passw: 'galapagosketchup1!', acctype: 'admin'}],
             activeUser: {usern: 'John', email: 'john@hotmail.com', passw: 'galapagosketchup1!', acctype: 'admin'},
-            errorMsg: ''
+            errorMsg: '',
+            isLoggedIn: false
             },
-    getters: {},
+    getters: {
+        totalUsers(state) {
+            return state.users.length;
+        },
+        isLoggedIn(state) {
+            return state.isLoggedIn;
+        }
+    },
     mutations: {
         DELETE_USER(state, selectedUser) {
             if (state.activeUser.usern !== selectedUser) {
@@ -21,6 +29,9 @@ const store = createStore({
             } else if (state.activeUser.usern === selectedUser){
                 state.errorMsg = 'You have entered your own username, please change this and try again.'
             } 
+        },
+        LOG_IN(state) {
+            state.isLoggedIn = true;
         }
     },
     actions: {}
