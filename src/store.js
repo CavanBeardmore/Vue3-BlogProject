@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import Vue from 'vue'
 
 const store = createStore({
     state: {users: [{usern: 'Gary', email: 'gary@hotmail.com', passw: '12345678', acctype: 'user'},
@@ -32,6 +33,9 @@ const store = createStore({
         },
         LOG_IN(state) {
             state.isLoggedIn = true;
+        },
+        LOG_OUT(state) {
+            state.isLoggedIn = false;
         }
     },
     actions: {}

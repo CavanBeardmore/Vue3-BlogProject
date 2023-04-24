@@ -7,15 +7,18 @@
 <script>
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router'
 
 export default {
   setup() {
     const store = useStore()
+    const router = useRouter()
 
     const logInStatus = computed(() => store.getters.isLoggedIn)
 
     function logIn() {
       store.commit('LOG_IN')
+      router.push('/home');
     }
     
     return {

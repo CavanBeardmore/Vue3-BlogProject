@@ -13,6 +13,8 @@
     Account type: {{activeUser.acctype}}
   </p>
   <br>
+  <button @click="logOut">Log out</button>
+  <br>
   <div v-if="activeUser.acctype === 'admin'">
     <h3> All accounts </h3>
     <div>
@@ -43,10 +45,12 @@
 <script>
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router'
 
 export default {
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     const users = computed(() => store.state.users);
 
@@ -63,7 +67,12 @@ export default {
       selectedUser.value = ''
     }
 
-    return {users, selectedUser, totalUsers, activeUser, errorMsg, deleteUser}
+    function logOut() {
+      store.commit('LOG_OUT')
+      router.push('/')
+    }
+
+    return {users, selectedUser, totalUsers, activeUser, errorMsg, deleteUser, logOut}
     
   }
 }
