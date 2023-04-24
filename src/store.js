@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import accClass from './accClass';
 import Vue from 'vue'
 
 const store = createStore({
@@ -36,6 +37,9 @@ const store = createStore({
         },
         LOG_OUT(state) {
             state.isLoggedIn = false;
+        },
+        CREATE_ACC(state){
+            
         }
     },
     actions: {}
