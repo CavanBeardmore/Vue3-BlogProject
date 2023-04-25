@@ -1,4 +1,5 @@
 <template>
+
   <div class="sign-in">
     <h3> Sign in </h3>
     <label>Enter your username: </label>
@@ -13,6 +14,7 @@
     <br>
     <br>
   </div>
+
   <div class="acc-create">
     <h4> Don't have an account? </h4>
     <label>Enter your username: </label>
@@ -29,16 +31,17 @@
     <br>
     <label for="account-type">Choose account type: </label>
     <select name="account-type" id="account-type" v-model="role">
-      <option value="User" selected>User</option>
-      <option value="Creator">Creator</option>
-      <option value="Admin">Admin</option>
+      <option value="user" selected>User</option>
+      <option value="creator">Creator</option>
+      <option value="admin">Admin</option>
     </select>
     <br>
     <br>
-    <button @click="createAcc">Create account</button>
+    <button @click="createAcc(username, email, password, role)">Create account</button>
     <br>
     <br>
   </div>
+
 </template>
 
 <script>
@@ -56,15 +59,15 @@ export default {
     const username = ref('');
     const email = ref('');
     const password = ref('');
-    const role = ref('User');
+    const role = ref('user');
 
     function logIn() {
       store.commit('LOG_IN')
       router.push('/home');
     }
 
-    function createAcc() {
-      store.commit('CREATE_ACC')
+    function createAcc(username, email, password, role) {
+      store.commit('CREATE_ACC', { username, email, password, role })
     }
     
     return {

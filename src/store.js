@@ -1,12 +1,11 @@
 import { createStore } from 'vuex';
-import accClass from './accClass';
-import Vue from 'vue'
+import { User, Creator, Admin } from './accClass';
 
 const store = createStore({
     state: {users: [{usern: 'Gary', email: 'gary@hotmail.com', passw: '12345678', acctype: 'user'},
                     {usern: 'Phil', email: 'phil@hotmail.com', passw: 'kangaroo123', acctype: 'creator'},
                     {usern: 'John', email: 'john@hotmail.com', passw: 'galapagosketchup1!', acctype: 'admin'}],
-            activeUser: {usern: 'John', email: 'john@hotmail.com', passw: 'galapagosketchup1!', acctype: 'admin'},
+            activeUser: null,
             errorMsg: '',
             isLoggedIn: false
             },
@@ -38,8 +37,19 @@ const store = createStore({
         LOG_OUT(state) {
             state.isLoggedIn = false;
         },
-        CREATE_ACC(state){
-            
+        CREATE_ACC(state, payload){
+            const { username, email, password, role } = payload;
+            console.log(username, email, password, role)
+            if (role === 'user') {
+                state.activeUser = new User(username, email, password)
+                state.users = state.users.concat(state.activeUser)
+            } else if (role === 'creator'){
+                state.activeUser = new Creator(username, email, password)
+                state.users = state.users.concat(state.activeUser)
+            } else {
+                state.activeUser = new Admin(username, email, password)
+                state.users = state.users.concat(state.activeUser)
+            }
         }
     },
     actions: {}

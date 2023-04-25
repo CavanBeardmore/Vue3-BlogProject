@@ -9,25 +9,19 @@ class User {
     changeUsern(newName){
         if(this.usern !== newName && newName.length > 0){
             return this.usern = newName;
-        } else {
-            return this.usern = this.usern;
         }
     }
 
     changeEmail(newEmail){
         if(this.email !== newEmail && newEmail.length > 0){
             return this.email = newEmail;
-        } else {
-            return this.email = this.email;
-        }
+        } 
     }
 
     changePassw(newPassw){
         if(this.passw !== newPassw && newPassw.length > 0){
             return this.passw = newPassw;
-        } else {
-            return this.passw = this.passw;
-        }
+        } 
     }
 }
 
@@ -59,4 +53,4 @@ class Admin extends User {
     }
 }
 
-export default { User, Creator, Admin }
+export { User, Creator, Admin }
