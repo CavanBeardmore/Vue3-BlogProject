@@ -1,16 +1,16 @@
 <template>
-
+  
   <div class="sign-in">
     <h3> Sign in </h3>
     <label>Enter your username: </label>
-    <input type="text" placeholder="Jane Smith">
+    <input type="text" placeholder="Jane Smith" v-model="signInUser">
     <br>
     <br>
     <label>Enter your password: </label>
-    <input type="text" placeholder="******">
+    <input type="text" placeholder="******" v-model="signInPass">
     <br>
     <br>
-    <button @click="logIn">Log In</button>
+    <button @click="logIn(signInUser, signInPass)">Log In</button>
     <br>
     <br>
   </div>
@@ -51,22 +51,41 @@ import { useRouter } from 'vue-router'
 
 export default {
   setup() {
+    //use store and router
     const store = useStore()
     const router = useRouter()
 
+    //computed props
     const logInStatus = computed(() => store.getters.isLoggedIn)
+    const users = computed(() => store.state.users)
+    const activeUser = computed(() => store.getters.getActiveUser)
 
+    //refs for log in function
+    const signInUser = ref('');
+    const signInPass = ref('');
+    
+    //refs for create acc function
     const username = ref('');
     const email = ref('');
     const password = ref('');
     const role = ref('user');
 
-    function logIn() {
-      store.commit('LOG_IN')
-      router.push('/home');
+    //login function
+    function logIn(username, password) {
+      store.commit('CHANGE_USER', { username, password });
+
+      const filteredUsers = users.value.filter((user) => user.usern === activeUser.value.usern && user.passw === activeUser.value.passw)
+
+      if(filteredUsers.length){
+          store.commit('LOG_IN')
+          router.push('/home');
+      }
     }
 
+
+    //create account function
     function createAcc(username, email, password, role) {
+      //uses the create_acc mutation to make a new account
       store.commit('CREATE_ACC', { username, email, password, role })
     }
     
@@ -77,7 +96,10 @@ export default {
       role,
       username,
       email,
-      password
+      password,
+      signInPass,
+      signInUser,
+      activeUser
     }
   }
 }

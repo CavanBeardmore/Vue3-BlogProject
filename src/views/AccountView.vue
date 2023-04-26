@@ -14,6 +14,7 @@
   </p>
   <br>
   <button @click="logOut">Log out</button>
+
   <br>
   <div v-if="activeUser.acctype === 'admin'">
     <h3> All accounts </h3>
@@ -49,24 +50,26 @@ import { useRouter } from 'vue-router'
 
 export default {
   setup() {
+    //use store and router
     const store = useStore();
     const router = useRouter();
 
+    //computed variables
     const users = computed(() => store.state.users);
-
-    const activeUser = computed(() => store.state.activeUser)
-
-    const selectedUser = ref('')
-
+    const activeUser = computed(() => store.getters.getAccount)
     const totalUsers = computed(() => store.getters.totalUsers)
-
     const errorMsg = computed(() => store.state.errorMsg)
 
+    //refs
+    const selectedUser = ref('')
+
+    //delete user function
     function deleteUser() {
       store.commit('DELETE_USER', selectedUser.value)
       selectedUser.value = ''
     }
 
+    //logout function
     function logOut() {
       store.commit('LOG_OUT')
       router.push('/')
