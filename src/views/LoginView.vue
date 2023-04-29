@@ -3,7 +3,7 @@
   <div class="sign-in">
     <h3> Sign in </h3>
     <label>Enter your username: </label>
-    <input type="text" placeholder="Jane Smith" v-model="signInUser">
+    <input type="text" placeholder="JaneSmith18" v-model="signInUser">
     <br>
     <br>
     <label>Enter your password: </label>
@@ -18,15 +18,30 @@
   <div class="acc-create">
     <h4> Don't have an account? </h4>
     <label>Enter your username: </label>
-    <input type="text" placeholder="Jane Smith" v-model="username">
+    <input type="text" placeholder="Only letters and numbers" v-model="username">
+    <div v-show="unerror">
+      <br>
+      <br>
+      <p style="color: red"> {{ unerror }} </p>
+    </div>
     <br>
     <br>
     <label>Enter your email: </label>
-    <input type="text" placeholder="jane.smith@gmail.com" v-model="email">
+    <input type="text" placeholder="Must be a valid email" v-model="email">
+    <div v-show="emerror">
+      <br>
+      <br>
+      <p style="color: red"> {{ emerror }} </p>
+    </div>
     <br>
     <br>
     <label>Enter your password: </label>
-    <input type="text" placeholder="******" v-model="password">
+    <input type="text" placeholder="Only letters and numbers" v-model="password">
+    <div v-show="pwerror">
+      <br>
+      <br>
+      <p style="color: red"> {{ pwerror }} </p>
+    </div>
     <br>
     <br>
     <label for="account-type">Choose account type: </label>
@@ -38,6 +53,11 @@
     <br>
     <br>
     <button @click="createAcc(username, email, password, role)">Create account</button>
+    <div v-show="accmessage">
+      <br>
+      <br>
+      <p style="color: green"> {{ accmessage }} </p>
+    </div>
     <br>
     <br>
   </div>
@@ -48,6 +68,7 @@
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router'
+import { matches, validEmail } from '../regex'
 
 export default {
   setup() {
@@ -70,8 +91,15 @@ export default {
     const password = ref('');
     const role = ref('user');
 
+    //error message refs
+    const unerror = ref('');
+    const pwerror = ref('');
+    const emerror = ref('');
+    const accmessage = ref('');
+
     //login function
     function logIn(username, password) {
+
       store.commit('CHANGE_USER', { username, password });
 
       const filteredUsers = users.value.filter((user) => user.usern === activeUser.value.usern && user.passw === activeUser.value.passw)
@@ -82,11 +110,33 @@ export default {
       }
     }
 
-
     //create account function
     function createAcc(username, email, password, role) {
-      //uses the create_acc mutation to make a new account
-      store.commit('CREATE_ACC', { username, email, password, role })
+      //checks if username, password, and email pass the regex and that username and password are different 
+      //then uses the create acc mutation commit to create the account 
+      if (matches(username) === true && username !== password) {
+        if (matches(password) === true) {
+          if (validEmail(email) === true) {
+            store.commit('CREATE_ACC', { username, email, password, role })
+            accmessage.value = 'Account created!'
+            unerror.value = ''
+            emerror.value = ''
+            pwerror.value = ''
+          } else {
+            emerror.value = 'Email is invalid'
+            pwerror.value = ''
+            unerror.value = ''
+          }
+        } else {
+          pwerror.value = 'Password must contain only letters and numbers and must not be the same as the username'
+          unerror.value = ''
+          emerror.value = ''
+        }
+      } else {
+        unerror.value = 'Username must contain only letters and numbers and must not be the same as the password'
+        pwerror.value = ''
+        emerror.value = ''
+      }
     }
     
     return {
@@ -99,7 +149,11 @@ export default {
       password,
       signInPass,
       signInUser,
-      activeUser
+      activeUser,
+      pwerror,
+      unerror, 
+      emerror,
+      accmessage
     }
   }
 }
