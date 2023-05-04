@@ -1,22 +1,37 @@
 <template>
   <h3> Your account </h3>
   <p>
-    Username: {{activeUser.usern}}
+    Username: {{signedIn.usern}}
   </p>
+  <button @click="toggleEditName()">Edit</button>
+  <div v-show="editname">
+    <input v-model="editedValue" type="text">
+    <button @click="edit('usern', editedValue)">Submit</button>
+  </div>
   <p>
-    Email: {{activeUser.email}}
+    Email: {{signedIn.email}}
   </p>
+  <button @click="toggleEditEmail()">Edit</button>
+  <div v-show="editemail">
+    <input v-model="editedValue" type="text">
+    <button @click="edit('email', editedValue)">Submit</button>
+  </div>
   <p>
-    Password: {{activeUser.passw}}
+    Password: {{signedIn.passw}}
   </p>
+  <button @click="toggleEditPass()">Edit</button>
+  <div v-show="editpass">
+    <input v-model="editedValue" type="text">
+    <button @click="edit('passw', editedValue)">Submit</button>
+  </div>
   <p>
-    Account type: {{activeUser.acctype}}
+    Account type: {{signedIn.acctype}}
   </p>
   <br>
   <button @click="logOut">Log out</button>
 
   <br>
-  <div v-if="activeUser.acctype === 'admin'">
+  <div v-if="signedIn.acctype === 'admin'">
     <h3> All accounts </h3>
     <div>
       <h4> Total users: {{totalUsers}} </h4>
@@ -47,6 +62,7 @@
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router'
+import { matches, validEmail } from '../regex'
 
 export default {
   setup() {
@@ -56,12 +72,16 @@ export default {
 
     //computed variables
     const users = computed(() => store.state.users);
-    const activeUser = computed(() => store.getters.getAccount)
+    const signedIn = computed(() => store.state.signedIn)
     const totalUsers = computed(() => store.getters.totalUsers)
     const errorMsg = computed(() => store.state.errorMsg)
 
     //refs
     const selectedUser = ref('')
+    const editname = ref(false)
+    const editemail = ref(false)
+    const editpass = ref(false)
+    const editedValue = ref('')
 
     //delete user function
     function deleteUser() {
@@ -75,7 +95,66 @@ export default {
       router.push('/')
     }
 
-    return {users, selectedUser, totalUsers, activeUser, errorMsg, deleteUser, logOut}
+    //function that uses the edit mutation to change the users details
+    function edit(value, newValue) {
+      console.log(value, newValue)
+      if (value === 'email') {
+        if (validEmail(newValue) !== true) {
+        console.log('WRONG')
+        return
+      }
+      store.commit('EDIT', { value, newValue})
+      editedValue.value = ''
+      } else {
+        if (matches(newValue) !== true) {
+        console.log('WRONG')
+        return
+      }
+      store.commit('EDIT', { value, newValue})
+      editedValue.value = ''
+      }
+    }
+
+    //functions that toggle the edit fields for username, email and password, only 1 edit field can be open at one time
+    function toggleEditName() {
+      editname.value = !editname.value
+      if(editpass.value === true || editemail.value === true) {
+        editemail.value = false
+        editpass.value = false
+      }
+    }
+    function toggleEditEmail() {
+      editemail.value = !editemail.value
+      if(editname.value === true || editpass.value === true) {
+        editpass.value = false
+        editname.value = false
+      }
+    }
+    function toggleEditPass() {
+      editpass.value = !editpass.value
+      if(editname.value === true || editemail.value === true) {
+        editemail.value = false
+        editname.value = false
+      }
+    }
+
+    return {
+      users,
+      selectedUser,
+      totalUsers, 
+      signedIn, 
+      errorMsg, 
+      deleteUser, 
+      logOut,
+      editname,
+      toggleEditName,
+      toggleEditEmail,
+      toggleEditPass,
+      edit,
+      editedValue,
+      editemail,
+      editpass
+      }
     
   }
 }

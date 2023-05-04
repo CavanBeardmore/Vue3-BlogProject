@@ -7,12 +7,15 @@
     <br>
     <br>
     <label>Enter your password: </label>
-    <input type="text" placeholder="******" v-model="signInPass">
+    <input type="password" placeholder="******" v-model="signInPass">
     <br>
     <br>
     <button @click="logIn(signInUser, signInPass)">Log In</button>
     <br>
     <br>
+    <div v-show="loginerror">
+      <p style="color: red"> {{ loginerror }} </p>
+    </div>
   </div>
 
   <div class="acc-create">
@@ -96,6 +99,7 @@ export default {
     const pwerror = ref('');
     const emerror = ref('');
     const accmessage = ref('');
+    const loginerror = ref('');
 
     //login function
     function logIn(username, password) {
@@ -107,6 +111,9 @@ export default {
       if(filteredUsers.length){
           store.commit('LOG_IN')
           router.push('/home');
+          store.commit('NEW_SIGNIN', filteredUsers[0])
+      } else {
+        loginerror.value = 'Login details are invalid'
       }
     }
 
@@ -153,7 +160,8 @@ export default {
       pwerror,
       unerror, 
       emerror,
-      accmessage
+      accmessage,
+      loginerror
     }
   }
 }
