@@ -72,6 +72,7 @@ import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router'
 import { matches, validEmail } from '../regex'
+import { doesUserExist } from '../funcs'
 
 export default {
   setup() {
@@ -104,10 +105,14 @@ export default {
     //login function
     function logIn(username, password) {
 
+      //changes the activeuser intending to login within the store
       store.commit('CHANGE_USER', { username, password });
 
+      //checks if the activeuser exists within the userbase
       const filteredUsers = users.value.filter((user) => user.usern === activeUser.value.usern && user.passw === activeUser.value.passw)
 
+      //if filter check is true it runs login mutation changes router location to home and changes the signed in user accordingly
+      //if filter check is false proides a login error
       if(filteredUsers.length){
           store.commit('LOG_IN')
           router.push('/home');
@@ -119,30 +124,35 @@ export default {
 
     //create account function
     function createAcc(username, email, password, role) {
-      //checks if username, password, and email pass the regex and that username and password are different 
-      //then uses the create acc mutation commit to create the account 
-      if (matches(username) === true && username !== password) {
-        if (matches(password) === true) {
-          if (validEmail(email) === true) {
-            store.commit('CREATE_ACC', { username, email, password, role })
-            accmessage.value = 'Account created!'
+      //checks if the username entered already exists within the user base if false code runs else returns error
+      if (!doesUserExist(username, users.value)) {
+        //checks if username, password, and email pass the regex and that username and password are different 
+        //then uses the create acc mutation commit to create the account 
+        if (matches(username) && username !== password) {
+          if (matches(password)) {
+            if (validEmail(email)) {
+              store.commit('CREATE_ACC', { username, email, password, role })
+              accmessage.value = 'Account created!'
+              unerror.value = ''
+              emerror.value = ''
+              pwerror.value = ''
+            } else {
+              emerror.value = 'Email is invalid'
+              pwerror.value = ''
+              unerror.value = ''
+            }
+          } else {
+            pwerror.value = 'Password must contain only letters and numbers and must not be the same as the username'
             unerror.value = ''
             emerror.value = ''
-            pwerror.value = ''
-          } else {
-            emerror.value = 'Email is invalid'
-            pwerror.value = ''
-            unerror.value = ''
           }
         } else {
-          pwerror.value = 'Password must contain only letters and numbers and must not be the same as the username'
-          unerror.value = ''
+          unerror.value = 'Username must contain only letters and numbers and must not be the same as the password'
+          pwerror.value = ''
           emerror.value = ''
         }
       } else {
-        unerror.value = 'Username must contain only letters and numbers and must not be the same as the password'
-        pwerror.value = ''
-        emerror.value = ''
+        unerror.value = 'Username already exists'
       }
     }
     

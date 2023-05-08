@@ -1,0 +1,5 @@
+CHANGES TO BE MADE:
+
+ - create a js file called funcs with functions that i can import into complicated component functions
+ - in funcs create a username validator that searches the users array for an account that has a user with the same username
+ - 
