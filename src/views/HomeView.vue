@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <h1> Hello World </h1>
-    {{$store.state.title}}
+    <h1> Blog Project! </h1>
   </div>
 </template>
 
