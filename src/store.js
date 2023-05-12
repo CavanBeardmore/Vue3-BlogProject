@@ -6,9 +6,9 @@ const store = createStore({
                     {usern: 'Gary', email: 'gary@hotmail.com', passw: '12345678', acctype: 'user'},
                     {usern: 'Phil', email: 'phil@hotmail.com', passw: 'kangaroo123', acctype: 'creator'},
                     {usern: 'John', email: 'john@hotmail.com', passw: 'galapagosketchup1', acctype: 'admin'}],
-            posts: [{title: 'Lorem ipsum', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', id: 1},
-                    {title: 'Lorem ipsum1', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', id: 2},
-                    {title: 'Lorem ipsum2', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', id: 3}],
+            posts: [{title: 'Lorem ipsum', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', tags: ['Lorem', 'Ipsum'], creator: 'Phil', id: 1},
+                    {title: 'Lorem ipsum1', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', tags: ['Lorem', 'Ipsum'], creator: 'Phil', id: 2},
+                    {title: 'Lorem ipsum2', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', tags: ['Lorem', 'Ipsum'], creator: 'Phil', id: 3}],
             newUser: null,
             signedIn: null,
             activeUser: null,
@@ -85,6 +85,11 @@ const store = createStore({
         },
         NEW_SIGNIN(state, user){
             state.signedIn = user;
+        },
+        PUBLISH_POST(state, payload) {
+            const { title, content, tagsArr } = payload;
+            const ID = state.posts.length + 1;
+            state.posts = state.posts.concat({title: title, content: content, tags: tagsArr, creator: state.signedIn.usern, id: ID})
         }
     },
     actions: {}
