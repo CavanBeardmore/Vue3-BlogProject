@@ -5,6 +5,8 @@
     <div class="creator-controls" v-if="user.acctype === 'creator'">
       <div v-show="!create">
         <button @click="toggleCreate">Create Post</button>
+        <br>
+        <br>
       </div>
       <div v-show="create">
         <button @click="toggleCreate">View Posts</button>
@@ -44,7 +46,7 @@
     </div>
 
     <!-- search -->
-    <div>
+    <div v-show="!create">
       <select name="search-criteria" id="search-criteria" v-model="criteria">
         <option value="Tag" selected>Tag</option>
         <option value="Title">Title</option>
@@ -129,13 +131,27 @@ export default {
 
     function searchFunc() {
       if (criteria.value === 'Creator') {
-        const creatorFiltered = posts.value.filter((post) => post.creator === searchInput.value)
-        console.log(creatorFiltered.length)
-        filteredSearch.value = creatorFiltered
-        if (creatorFiltered.length === 0) {
-        searchError.value = 'No results found'
+          const creatorFiltered = posts.value.filter((post) => post.creator === searchInput.value)
+          filteredSearch.value = creatorFiltered
+          searchError.value = ''
+          if (!creatorFiltered.length) {
+          searchError.value = 'No results found'
         }
-      } 
+      } else if (criteria.value === 'Tag') {
+          const tagFiltered = posts.value.filter((post) => post.tags.includes(searchInput.value))
+          filteredSearch.value = tagFiltered
+          searchError.value = ''
+          if (!tagFiltered.length) {
+          searchError.value = 'No results found'
+        }
+      } else if (criteria.value === 'Title') {
+        const titleFiltered = posts.value.filter((post) => post.title.split(' ').includes(searchInput.value))
+        filteredSearch.value = titleFiltered
+        searchError.value = ''
+        if (!titleFiltered.length) {
+          searchError.value = 'No results found'
+        }
+      }
     }
 
     //publish post function takes the v-modeled refs as arguments and uses import funcs to check their lengths
