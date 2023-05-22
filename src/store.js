@@ -2,7 +2,7 @@ import { createStore } from 'vuex';
 import { User, Creator, Admin } from './accClass';
 
 const store = createStore({
-    state: {users: [{usern: 'cavan', email: 'cav@hotmail.com', passw: 'cavan123', acctype: 'admin'},
+    state: {users: [{usern: 'Cavan', email: 'cav@hotmail.com', passw: 'cavan123', acctype: 'admin'},
                     {usern: 'Gary', email: 'gary@hotmail.com', passw: '12345678', acctype: 'user'},
                     {usern: 'Phil', email: 'phil@hotmail.com', passw: 'kangaroo123', acctype: 'creator'},
                     {usern: 'John', email: 'john@hotmail.com', passw: 'galapagosketchup1', acctype: 'admin'}],
@@ -86,10 +86,14 @@ const store = createStore({
         NEW_SIGNIN(state, user){
             state.signedIn = user;
         },
-        PUBLISH_POST(state, payload) {
+        PUBLISH_POST(state, payload){
             const { title, content, tagsArr } = payload;
             const ID = state.posts.length + 1;
             state.posts = state.posts.concat({title: title, content: content, tags: tagsArr, creator: state.signedIn.usern, id: ID})
+        },
+        DELETE_POST(state, id){
+            const index = state.posts.findIndex((post) => post.id === id)
+            state.posts.splice(index, 1)
         }
     },
     actions: {}

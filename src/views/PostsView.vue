@@ -16,7 +16,7 @@
         <div v-show="requirements">
           <p> The title is 40 characters maximum and more than 5 characters minimum. </p>
           <p> The content section is 6000 characters maximum and 500 characters minimum. </p>
-          <p> There must be a minimum of one tag and a maximum of 3 tags.</p>
+          <p> There is a maximum of 3 tags.</p>
         </div>
         <br>
         <br>
@@ -70,16 +70,7 @@
     <!-- posts section -->
     <div class="post-back" v-show="!create">
       <div v-for="post in posts" :key="post.title" class="post-tile">
-        <h3>{{post.title}}</h3>
-        <h4> Created by {{post.creator}} </h4>
-        <h4>{{post.content}}</h4>
-        <h5> Tags: </h5>
-        <div v-for="tag in post.tags" :key="tag"> 
-          <h6>{{tag}}</h6>
-        </div>
-        <div v-if="user.acctype === 'admin'">
-          <p>ID: {{post.id}}</p>
-        </div>
+        <SinglePost :post="post" />
       </div>
     </div>
 
@@ -90,8 +81,10 @@
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
 import { hasLength, lessThan, doesExist, moreThan } from '../funcs';
+import SinglePost from '../components/SinglePost.vue';
 
 export default {
+  components: { SinglePost },
   setup() {
     //use 
     const store = useStore()
@@ -129,6 +122,8 @@ export default {
       requirements.value = !requirements.value
     }
 
+    /* search function, checks the value of criteria (selected in the drop down), and then runs code dependant on this and assigns the filteredSearch variable
+    with the value of the search or displays the error code */
     function searchFunc() {
       if (criteria.value === 'Creator') {
           const creatorFiltered = posts.value.filter((post) => post.creator === searchInput.value)
@@ -154,8 +149,8 @@ export default {
       }
     }
 
-    //publish post function takes the v-modeled refs as arguments and uses import funcs to check their lengths
-    //if they pass then they
+    /*publish post function takes the v-modeled refs as arguments and uses import funcs to check their lengths
+    if they pass then they */
     function publishPost(title, content, tagsArr) {
       if (hasLength(title) && hasLength(content) && hasLength(tagsArr)) {
         if (lessThan(title, 40) && moreThan(title, 5) && lessThan(content, 6000) && moreThan(content, 500) && lessThan(tagsArr, 3)) {
@@ -170,6 +165,7 @@ export default {
       }
     }
 
+    //function that checks if the tag exists, runs code if doesnt, error code if does then checks its length to ensure there is no more than 3
     function addTag() {
       if (!doesExist(tag.value, tags.value)) {
         if (tags.value.length < 3) {

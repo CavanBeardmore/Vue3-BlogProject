@@ -1,8 +1,6 @@
 CHANGES TO BE MADE:
 
 posts: {
-    tag and title search category,
-    delete and edit buttons (only see these is created the post or if admin),
-    change toggle search funcs to one toggle func that takes the value
+edit button (only see these is created the post or if admin)
 }
 
