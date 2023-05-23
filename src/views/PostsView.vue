@@ -210,9 +210,24 @@ export default {
 <style>
   .post-tile {
     border-radius: 10px;
-    background-color: aquamarine;
+    background-color: #c9d4da;
     width: 70%;
     margin: auto;
+    border-style: ridge;
+    padding: 10px;
+  }
+
+  .post-tile:hover{
+    border-style: solid;
+    background-color: #becbd2;
+  }
+
+  .post-tile:hover .title{
+    text-decoration: underline;
+  }
+
+  .back{
+    background-color: #f4f6f7;
   }
 
   .input-title{

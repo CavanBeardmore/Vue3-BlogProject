@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h3>{{post.title}}</h3>
+    <div class="post" @dblclick="view(post.id)">
+        <h3 class="title" @click="view(post.id)">{{post.title}}</h3>
         <h4> Created by {{post.creator}} </h4>
         <h4>{{snippet}}</h4>
         <h5> Tags: </h5>
@@ -22,12 +22,14 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
     props: ['post'],
     setup(props) {
         //useStore
         const store = useStore()
+        const router = useRouter()
         
         //computed
         const user = computed(() => store.state.signedIn)
@@ -40,15 +42,20 @@ export default {
             store.commit('DELETE_POST', post)
         }
 
+        function view(post) {
+            router.push({ name: 'SinglePostView', params: { id: post } })
+        }
+
         return {
             user,
             snippet,
-            deletePost
+            deletePost,
+            view
         }
     }
 }
 </script>
 
 <style>
-
+ 
 </style>

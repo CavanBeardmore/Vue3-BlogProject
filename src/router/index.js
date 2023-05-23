@@ -4,6 +4,7 @@ import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
 import PostsView from '../views/PostsView.vue'
 import AccountView from '../views/AccountView.vue'
+import SinglePostView from '../views/SinglePostView.vue'
 import store from '../store.js'
 
 const routes = [
@@ -43,6 +44,12 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/post/:id',
+    name: 'SinglePostView',
+    component: SinglePostView,
+    props: true
   }
 ]
 

@@ -100,14 +100,12 @@ export default {
       console.log(value, newValue)
       if (value === 'email') {
         if (validEmail(newValue) !== true) {
-        console.log('WRONG')
         return
       }
       store.commit('EDIT', { value, newValue})
       editedValue.value = ''
       } else {
         if (matches(newValue) !== true) {
-        console.log('WRONG')
         return
       }
       store.commit('EDIT', { value, newValue})

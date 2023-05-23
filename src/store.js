@@ -13,7 +13,8 @@ const store = createStore({
             signedIn: null,
             activeUser: null,
             errorMsg: '',
-            isLoggedIn: false
+            isLoggedIn: false,
+            viewedPost: null
             },
     getters: {
         totalUsers(state) {
