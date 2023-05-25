@@ -16,7 +16,7 @@
         <div v-show="requirements">
           <p> The title is 40 characters maximum and more than 5 characters minimum. </p>
           <p> The content section is 6000 characters maximum and 500 characters minimum. </p>
-          <p> There is a maximum of 3 tags.</p>
+          <p> There is a minimum of 1 tag and a maximum of 3 tags.</p>
         </div>
         <br>
         <br>

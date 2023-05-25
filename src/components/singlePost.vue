@@ -5,8 +5,7 @@
         <h4>{{snippet}}</h4>
         <h5> Tags: </h5>
         <div v-for="tag in post.tags" :key="tag"> 
-            <h6 v-if="post.tags.length">{{tag}}</h6>
-            <h6 v-else> No tags have been created </h6>
+            <h6>#{{tag}}</h6>
         </div>
         <div v-if="user.acctype === 'admin'">
         <p>ID: {{post.id}}</p>
