@@ -2,5 +2,11 @@ CHANGES TO BE MADE:
 
 posts: {
 edit button (only see these is created the post or if admin)
+toggling the view of search, view posts create posst needs to change to a universal toggle {
+    have a ref for create, search, own posts all set to false,
+    have a ref for posts set to true, 
+    have buttons for e
+}
+
 }
 

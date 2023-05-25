@@ -67,6 +67,8 @@
       </div>
     </div>
 
+
+
     <!-- posts section -->
     <div class="post-back" v-show="!create">
       <div v-for="post in posts" :key="post.title" class="post-tile">
@@ -79,7 +81,7 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { hasLength, lessThan, doesExist, moreThan } from '../funcs';
 import SinglePost from '../components/SinglePost.vue';
 
@@ -96,6 +98,7 @@ export default {
     //boolean refs
     const create = ref(false)
     const requirements = ref(false)
+    const postsOff = ref(false)
 
     //input refs
     const title = ref('')
@@ -110,7 +113,7 @@ export default {
     const postMessage = ref('')
     const searchError = ref('')
 
-    //array ref
+    //other refs
     const tags = ref([])
     const filteredSearch = ref()
 
@@ -201,7 +204,9 @@ export default {
       criteria,
       searchFunc,
       filteredSearch,
-      searchError
+      searchError,
+      userPosts,
+      postsOff
     }
   }
 }
