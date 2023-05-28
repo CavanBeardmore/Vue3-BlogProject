@@ -93,6 +93,7 @@ const store = createStore({
             state.posts = state.posts.concat({title: title, content: content, tags: tagsArr, creator: state.signedIn.usern, id: ID})
         },
         DELETE_POST(state, id){
+            console.log('deleting')
             const index = state.posts.findIndex((post) => post.id === id)
             state.posts.splice(index, 1)
         }

@@ -2,7 +2,7 @@
   <div class="back">
 
     <!-- create post section -->
-    <div class="creator-controls" v-if="user.acctype === 'creator'">
+    <div class="creator-controls" v-if="user.acctype === 'creator' || user.acctype === 'admin'">
       <div v-show="!create">
         <button @click="toggleCreate">Create Post</button>
         <br>
@@ -33,6 +33,12 @@
         <br>
         <br>
         <button @click="addTag">Add Tag</button>
+        <br>
+        <br>
+        <input type="text" v-model="deletedTag" class="cont-tags-input" placeholder="Enter a tag you wish to delete.">
+        <br>
+        <br>
+        <button @click="deleteTag">Delete Tag</button>
         <div class="list-container" v-show="tags.length">
           <h5> Your Tags: </h5>
           <li v-for="tag in tags" :key="tag" class="tag-list">
@@ -67,8 +73,6 @@
       </div>
     </div>
 
-
-
     <!-- posts section -->
     <div class="post-back" v-show="!create">
       <div v-for="post in posts" :key="post.title" class="post-tile">
@@ -98,7 +102,6 @@ export default {
     //boolean refs
     const create = ref(false)
     const requirements = ref(false)
-    const postsOff = ref(false)
 
     //input refs
     const title = ref('')
@@ -106,6 +109,7 @@ export default {
     const tag = ref('')
     const searchInput = ref('')
     const criteria = ref('Tag')
+    const deletedTag = ref('')
 
     //error & message refs
     const tagError = ref('')
@@ -181,7 +185,12 @@ export default {
       } else {
         tagError.value = 'This tag already exists.'
       }
+    }
 
+    function deleteTag() {
+      const index = tags.value.indexOf(deletedTag.value)
+      tags.value.splice(index, 1)
+      deletedTag.value = ''
     }
 
     return {
@@ -205,10 +214,10 @@ export default {
       searchFunc,
       filteredSearch,
       searchError,
-      userPosts,
-      postsOff
-    }
+      deleteTag,
+      deletedTag
   }
+}
 }
 </script>
 

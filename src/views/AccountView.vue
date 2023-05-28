@@ -28,13 +28,12 @@
   <p>
     Account type: {{signedIn.acctype}}
   </p>
-  <br>
   <button @click="logOut">Log out</button>
   <br>
   <br>
 
   <div>
-    <UserPosts :userPosts="userPosts" />
+    <UserPosts />
   </div>
 
   <!-- if user is an admin it shows all the users and a delete account option -->
@@ -92,19 +91,12 @@ export default {
     // string refs
     const selectedUser = ref('')
     const editedValue = ref('')
-    const userPosts = ref('')
 
     //boolean refs
     const editname = ref(false)
     const editemail = ref(false)
     const editpass = ref(false)
     const accounts = ref(false)
-
-    //lifecycle hook
-    onMounted(() => {
-      const postsArray = store.state.posts.filter((post) => post.creator === signedIn.value.usern)
-      userPosts.value = postsArray
-    })
 
     //delete user function
     function deleteUser() {
@@ -180,7 +172,6 @@ export default {
       editedValue,
       editemail,
       editpass,
-      userPosts,
       accounts,
       toggleAccs
       }
