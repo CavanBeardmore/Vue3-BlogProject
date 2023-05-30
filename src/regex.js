@@ -32,4 +32,22 @@ function validEmail(string) {
     }
 }
 
-export { matches, validEmail}
+function validTag(string) {
+    const regex = /^[a-zA-Z]{3,}$/
+
+    const test = string.match(regex)
+
+    if (test) {
+        const joined = test.join('');
+        if ( string === joined ) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+export { matches, validEmail, validTag}
+

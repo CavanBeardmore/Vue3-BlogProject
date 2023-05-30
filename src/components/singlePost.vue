@@ -12,7 +12,7 @@
         </div>
     </div>
     <div v-show="user.usern === post.creator || user.acctype === 'admin'">
-        <button @click="deletePost(post.id)"> Delete </button>
+        <button @click="deletePost(post)"> Delete </button>
         <br>
     </div>
     <br>

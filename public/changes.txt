@@ -10,3 +10,10 @@ toggling the view of search, view posts create posst needs to change to a univer
 
 }
 
+
+bugs - need else clause when deleting tags or it delets the last entry
+
+can add multiple identical posts??
+
+not notifying when a post does not meet requirements only when published
+

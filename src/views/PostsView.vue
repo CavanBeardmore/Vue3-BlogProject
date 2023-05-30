@@ -88,6 +88,7 @@ import { useStore } from 'vuex';
 import { ref, computed, onMounted } from 'vue';
 import { hasLength, lessThan, doesExist, moreThan } from '../funcs';
 import SinglePost from '../components/SinglePost.vue';
+import { validTag } from '../regex'
 
 export default {
   components: { SinglePost },
@@ -174,17 +175,22 @@ export default {
 
     //function that checks if the tag exists, runs code if doesnt, error code if does then checks its length to ensure there is no more than 3
     function addTag() {
-      if (!doesExist(tag.value, tags.value)) {
-        if (tags.value.length < 3) {
-          tags.value = tags.value.concat(tag.value)
-          tag.value = ''
-          tagError.value = ''
+      if (validTag(tag.value)) {
+        if (!doesExist(tag.value, tags.value)) {
+          if (tags.value.length < 3) {
+            tags.value = tags.value.concat(tag.value)
+            tag.value = ''
+            tagError.value = ''
+          } else {
+            tagError.value = 'You can only have up to 3 tags.'
+        }
         } else {
-          tagError.value = 'You can only have up to 3 tags.'
-      }
+          tagError.value = 'This tag already exists.'
+        }
       } else {
-        tagError.value = 'This tag already exists.'
+        tagError.value = 'Tag must not be empty, must compromise of only letters, and be a minimum of 3 characters long.'
       }
+
     }
 
     function deleteTag() {

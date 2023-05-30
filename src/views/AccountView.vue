@@ -38,31 +38,33 @@
 
   <!-- if user is an admin it shows all the users and a delete account option -->
   <br>
-  <button @click="toggleAccs">View Accounts</button>
-  <div v-show="accounts">
-    <div v-if="signedIn.acctype === 'admin'">
-      <h3> All accounts </h3>
-      <h6> Enter username of the user you wish to delete. </h6>
-      <p> {{errorMsg}} </p>
-      <input type="text" v-model="selectedUser" placeholder="Username">
-      <button @click="deleteUser"> Delete user </button>
+  <div v-if="signedIn.acctype === 'admin'">
+    <button @click="toggleAccs">View Accounts</button>
+    <div v-show="accounts">
       <div>
-        <h4> Total users: {{totalUsers}} </h4>
-      </div>
-      <div v-for="user in users" :key="user.usern">
-        <p>
-          Username: {{user.usern}}
-        </p>
-        <p>
-          Email: {{user.email}}
-        </p>
-        <p>
-          Password: {{user.passw}}
-        </p>
-        <p>
-          Account type: {{user.acctype}}
-        </p>
-        <br>
+        <h3> All accounts </h3>
+        <h6> Enter username of the user you wish to delete. </h6>
+        <p> {{errorMsg}} </p>
+        <input type="text" v-model="selectedUser" placeholder="Username">
+        <button @click="deleteUser"> Delete user </button>
+        <div>
+          <h4> Total users: {{totalUsers}} </h4>
+        </div>
+        <div v-for="user in users" :key="user.usern">
+          <p>
+            Username: {{user.usern}}
+          </p>
+          <p>
+            Email: {{user.email}}
+          </p>
+          <p>
+            Password: {{user.passw}}
+          </p>
+          <p>
+            Account type: {{user.acctype}}
+          </p>
+          <br>
+        </div>
       </div>
     </div>
   </div>
@@ -123,7 +125,7 @@ export default {
         if (matches(newValue) !== true) {
         return
       }
-      store.commit('EDIT', { value, newValue})
+      store.commit('EDIT', { value, newValue })
       editedValue.value = ''
       }
     }

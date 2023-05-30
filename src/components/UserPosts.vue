@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-if="user.acctype === 'admin' || user.acctype === 'creator'">
     <button @click="showPosts" v-show="!ownPosts">View my posts</button>
     <div v-show="ownPosts">
         <button @click="showPosts">Close my posts </button>
-        <div v-if="userPosts.length">
-            <div v-for="post in userPosts" :key="post.id">
+        <div v-if="posts.length">
+            <div v-for="post in posts" :key="post.id">
                 <div class="header">
                     <h2>{{post.title}}</h2>
                     <h4>Created by {{post.creator}}</h4>
@@ -18,7 +18,7 @@
                 <div v-if="user.acctype === 'admin'">
                     <p> Post ID:{{post.id}}</p>
                 </div>
-                <button @click="deletePost(post.id)">Delete</button>
+                <button @click="deletePost(post)">Delete</button>
                 <br>
                 <br>
                 <button @click="enableEdit(post)" v-show="!editPost">Edit</button>
@@ -63,7 +63,7 @@ export default {
 
         //computed 
         const user = computed(() => store.state.signedIn)
-        const posts = computed(() => store.state.posts)
+        const posts = computed(() => store.state.signedIn.posts)
 
         //boolean refs
         const ownPosts = ref(false)
@@ -74,12 +74,6 @@ export default {
         const editTitle = ref('')
         const editContent = ref('')
         const editTags = ref('')
-
-        //lifecycle hook
-        onMounted(() => {
-            const postsArray = store.state.posts.filter((post) => post.creator === user.value.usern)
-            userPosts.value = postsArray
-        })
 
         //toggle func
         function showPosts() {
@@ -119,6 +113,7 @@ export default {
             editTags,
             enableEdit,
             disableEdit,
+            posts
         }
     }
 }

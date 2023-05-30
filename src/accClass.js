@@ -33,19 +33,16 @@ class Creator extends User {
     }
 
     addPost(post){
-        if(!this.posts.includes(post) && post.length > 0){
-            this.posts = this.posts.concat(post)
-        }
+       this.posts.push(post)
     }
 
     deletePost(post){
-        if(this.posts.includes(post) && post.length > 0){
-            this.posts = this.posts.pop(post)
-        }
+        const index = this.posts.findIndex((value) => value.id === post.id)
+        this.posts.splice(index, 1)
     }
 }
 
-class Admin extends User {
+class Admin extends Creator {
     constructor(usern, email, passw){
         super(usern, email, passw)
 
@@ -53,4 +50,15 @@ class Admin extends User {
     }
 }
 
-export { User, Creator, Admin }
+class Post{
+    constructor(title, content, tags, creator, id) {
+        this.title = title;
+        this.content = content;
+        this.tags = tags;
+        this.creator = creator;
+        this.id = id
+    }
+}
+
+export { User, Creator, Admin, Post }
+
