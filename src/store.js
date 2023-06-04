@@ -2,13 +2,8 @@ import { createStore } from 'vuex';
 import { User, Creator, Admin, Post } from './accClass';
 
 const store = createStore({
-    state: {users: [{usern: 'Cavan', email: 'cav@hotmail.com', passw: 'cavan123', acctype: 'admin'},
-                    {usern: 'Gary', email: 'gary@hotmail.com', passw: '12345678', acctype: 'user'},
-                    {usern: 'Phil', email: 'phil@hotmail.com', passw: 'kangaroo123', acctype: 'creator'},
-                    {usern: 'John', email: 'john@hotmail.com', passw: 'galapagosketchup1', acctype: 'admin'}],
-            posts: [{title: 'Lorem ipsum', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', tags: ['Lorem', 'Ipsum'], creator: 'Cavan', id: 1},
-                    {title: 'Lorem ipsum1', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', tags: ['Lorem', 'Ipsum'], creator: 'Phil', id: 2},
-                    {title: 'Lorem ipsum2', content: 'Lorem ipsum dolor sit amet. Ex omnis asperiores qui quia ipsum qui maxime quibusdam! Ea rerum nihil qui fugiat maiores et vero blanditiis ad iure numquam eum distinctio quibusdam aut quia eius. Id error dolor quo enim iusto est dolore ipsam. At minus illo a quam molestias aut alias reprehenderit aut delectus vitae ab veritatis molestiae non atque officia id quidem impedit.', tags: ['Lorem', 'Ipsum'], creator: 'Phil', id: 3}],
+    state: {users: [],
+            posts: [],
             signedIn: null,
             activeUser: null,
             errorMsg: '',
@@ -92,10 +87,10 @@ const store = createStore({
             state.signedIn = user;
         },
         PUBLISH_POST(state, payload){
-            const { title, content, tagsArr } = payload;
+            const { titleInput, contentInput, tagsArr } = payload;
             const ID = state.posts.length + 1;
             const creator = state.users.filter((user) => user.usern === state.signedIn.usern)
-            const post = new Post(title, content, tagsArr, creator[0].usern, ID)
+            const post = new Post(titleInput, contentInput, tagsArr, creator[0].usern, ID)
             creator[0].addPost(post)
             state.posts.push(post)
         },

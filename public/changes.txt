@@ -11,9 +11,10 @@ toggling the view of search, view posts create posst needs to change to a univer
 }
 
 
-bugs - need else clause when deleting tags or it delets the last entry
+bugs - need else clause when deleting tags or it delets the last entry - fixed
 
-can add multiple identical posts??
+a main function will use helper functions and provide a true or false value
+        a helper function will need to check for identical title and or content
+                can add multiple identical posts??
 
 not notifying when a post does not meet requirements only when published
-

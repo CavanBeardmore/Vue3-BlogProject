@@ -159,19 +159,20 @@ export default {
 
     /*publish post function takes the v-modeled refs as arguments and uses import funcs to check their lengths
     if they pass then they */
-    function publishPost(title, content, tagsArr) {
-      if (hasLength(title) && hasLength(content) && hasLength(tagsArr)) {
-        if (lessThan(title, 40) && moreThan(title, 5) && lessThan(content, 6000) && moreThan(content, 500) && lessThan(tagsArr, 3)) {
-          store.commit('PUBLISH_POST', { title, content, tagsArr })
-          postMessage.value = 'Post has been published!'
-          postError.value = ''
-        }
+    function publishPost(titleInput, contentInput, tagsArr) {
+      if (lessThan(titleInput, 40) && moreThan(titleInput, 5) && lessThan(contentInput, 6000) && moreThan(contentInput, 500) && lessThan(tagsArr, 3) && moreThan(tagsArr, 1)) {
+        store.commit('PUBLISH_POST', { titleInput, contentInput, tagsArr })
+        postMessage.value = 'Post has been published!'
+        postError.value = ''
+        title.value = ''
+        content.value = ''
+        tags.value = ''
       } else {
         postMessage.value = ''
         postError.value = 'Post does not meet requirements.'
         requirements.value = true
-      }
     }
+  }
 
     //function that checks if the tag exists, runs code if doesnt, error code if does then checks its length to ensure there is no more than 3
     function addTag() {
@@ -194,9 +195,11 @@ export default {
     }
 
     function deleteTag() {
-      const index = tags.value.indexOf(deletedTag.value)
-      tags.value.splice(index, 1)
-      deletedTag.value = ''
+      if (tags.value.includes(deletedTag.value)) {
+          const index = tags.value.indexOf(deletedTag.value)
+          tags.value.splice(index, 1)
+          deletedTag.value = ''
+        }
     }
 
     return {
