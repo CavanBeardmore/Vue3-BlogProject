@@ -57,6 +57,11 @@ class Post{
         this.tags = tags;
         this.creator = creator;
         this.id = id
+        this.edit = false
+    }
+
+    toggleEditPost() {
+        this.edit = !this.edit
     }
 }
 

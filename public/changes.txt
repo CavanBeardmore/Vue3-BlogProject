@@ -9,3 +9,5 @@ toggling the view of search, view posts create posst needs to change to a univer
 }
 
 }
+
+using edit post activates it for all posts needs to be singular perhaps posts component for each?
