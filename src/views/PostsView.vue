@@ -75,8 +75,13 @@
 
     <!-- posts section -->
     <div class="post-back" v-show="!create">
-      <div v-for="post in posts" :key="post.title" class="post-tile">
-        <SinglePost :post="post" />
+      <div v-if="posts.length">
+        <div v-for="post in posts" :key="post.title" class="post-tile">
+          <SinglePost :post="post" />
+        </div>
+      </div>
+      <div v-else>
+        <p> There are no posts here. </p>
       </div>
     </div>
 
@@ -86,7 +91,7 @@
 <script>
 import { useStore } from 'vuex';
 import { ref, computed, onMounted } from 'vue';
-import { hasLength, lessThan, doesExist, moreThan } from '../funcs';
+import { hasLength, lessThan, doesExist, moreThan } from '../helperFuncs';
 import SinglePost from '../components/SinglePost.vue';
 import { validTag } from '../regex'
 
@@ -172,7 +177,8 @@ export default {
         postError.value = 'Post does not meet requirements.'
         requirements.value = true
     }
-  }
+
+    }
 
     //function that checks if the tag exists, runs code if doesnt, error code if does then checks its length to ensure there is no more than 3
     function addTag() {

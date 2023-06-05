@@ -72,7 +72,7 @@ import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router'
 import { matches, validEmail } from '../regex'
-import { doesUserExist } from '../funcs'
+import { doesUserExist } from '../helperFuncs'
 
 export default {
   setup() {
