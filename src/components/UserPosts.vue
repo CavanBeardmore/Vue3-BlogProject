@@ -14,6 +14,7 @@
                     <div v-for="tag in post.tags" :key="tag" class="tags">
                         <h6 class="tag"> #{{tag}} </h6>
                     </div>
+                    <h6> {{post.date}} </h6>
                 </div>
                 <div v-if="user.acctype === 'admin'">
                     <p> Post ID:{{post.id}}</p>
@@ -26,10 +27,13 @@
                     <button @click="disableEdit(post)" v-show="post.edit">Close Edit</button>
                     <h4> Title </h4>
                     <input type="text" v-model="editTitle" class="input-title" placeholder="Why do cats hate Mondays?">
+                    <button @click="submitChange(post, editTitle, 5, 40, 'title')">Submit changes</button>
                     <br>
                     <h4> Content </h4>
                     <textarea rows="4" cols="100" v-model="editContent" placeholder="Garfields influence upon the feline population cannot be underestimated."></textarea>
+                    <button @click="submitChange(post, editContent, 500, 6000, 'content')">Submit changes</button>
                     <br>
+                    <p style="color: red"> {{editError}} </p>
                     <h4> Content tags </h4>
                     <input type="text" v-model="editTag" class="cont-tags-input" placeholder="Enter a tag relevant to your post and click add tag.">
                     <br>
@@ -62,6 +66,7 @@
 <script>
 import { computed, onMounted, onUpdated, ref } from 'vue'
 import { useStore } from 'vuex'
+import { meetsLengthReqs } from '../helperFuncs'
 
 export default {
     setup(){
@@ -82,6 +87,7 @@ export default {
         const editTags = ref('')
         const deletedTag = ref('')
         const editTagError = ref('')
+        const editError = ref('')
         const editTag = ref('')
 
         //toggle func
@@ -125,6 +131,14 @@ export default {
             }
         }
 
+        function submitChange(post, value, lowerNum, higherNum, component) {
+            if (meetsLengthReqs(value, lowerNum, higherNum)) {
+                component === 'title' ? post.changeTitle(value) : post.changeContent(value)
+            } else {
+                editError.value = 'New value does not meet requirements.'
+            }
+        }
+
         return {
             ownPosts,
             showPosts,
@@ -140,7 +154,9 @@ export default {
             deletedTag,
             deleteTag,
             editTagError,
-            editTag
+            editTag,
+            submitChange,
+            editError
         }
     }
 }

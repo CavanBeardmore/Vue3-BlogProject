@@ -34,6 +34,14 @@ function moreThan(value, num) {
     }
 }
 
+function meetsLengthReqs(value, lowerNum, higherNum) {
+    if (value.length >= lowerNum && value.length <= higherNum) {
+        return true 
+    } else {
+        return false
+    }
+}
+
 function doesExist(value, arrayOfValues) {
     const lowerCaseValue = value.toLowerCase()
     const lowerCaseArray = arrayOfValues.map((v) => v.toLowerCase())
@@ -47,4 +55,4 @@ function doesExist(value, arrayOfValues) {
 }
 
 
-export { doesUserExist, hasLength, lessThan, doesExist, moreThan }
+export { doesUserExist, hasLength, lessThan, doesExist, moreThan, meetsLengthReqs }

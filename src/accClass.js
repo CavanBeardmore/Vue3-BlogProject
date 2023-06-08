@@ -51,18 +51,28 @@ class Admin extends Creator {
 }
 
 class Post{
-    constructor(title, content, tags, creator, id) {
+    constructor(title, content, tags, creator, id, date) {
         this.title = title;
         this.content = content;
         this.tags = tags;
         this.creator = creator;
         this.id = id
+        this.date = date
         this.edit = false
     }
 
     toggleEditPost() {
         this.edit = !this.edit
     }
+
+    changeTitle(value) {
+        this.title = value
+    }
+
+    changeContent(value) {
+        this.content = value
+    }
+
 }
 
 export { User, Creator, Admin, Post }

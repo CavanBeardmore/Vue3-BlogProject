@@ -90,7 +90,12 @@ const store = createStore({
             const { titleInput, contentInput, tagsArr } = payload;
             const ID = state.posts.length + 1;
             const creator = state.users.filter((user) => user.usern === state.signedIn.usern)
-            const post = new Post(titleInput, contentInput, tagsArr, creator[0].usern, ID)
+            const fullDate = new Date()
+            const y = fullDate.getFullYear()
+            const m = fullDate.getMonth()
+            const d = fullDate.getDate()
+            const date = d + '/' + m + '/' + y
+            const post = new Post(titleInput, contentInput, tagsArr, creator[0].usern, ID, date)
             creator[0].addPost(post)
             state.posts.push(post)
         },

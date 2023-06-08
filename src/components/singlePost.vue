@@ -7,6 +7,7 @@
         <div v-for="tag in post.tags" :key="tag"> 
             <h6>#{{tag}}</h6>
         </div>
+        <h6> {{post.date}} </h6>
         <div v-if="user.acctype === 'admin'">
         <p>ID: {{post.id}}</p>
         </div>
