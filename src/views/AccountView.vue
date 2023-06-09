@@ -1,73 +1,81 @@
 <template>
+<div class="container">
   <!-- account details -->
-  <h3> Your account </h3>
-  <p>
-    Username: {{signedIn.usern}}
-  </p>
-  <button @click="toggleEditName()">Edit</button>
-  <div v-show="editname">
-    <input v-model="editedValue" type="text">
-    <button @click="edit('usern', editedValue)">Submit</button>
+  <div class="details">
+    <h3> Your account </h3>
+    <p>
+      Username: {{signedIn.usern}}
+    </p>
+    <button @click="toggleEditName()">Edit</button>
+    <div v-show="editname">
+      <input v-model="editedValue" type="text">
+      <button @click="edit('usern', editedValue)">Submit</button>
+    </div>
+    <p>
+      Email: {{signedIn.email}}
+    </p>
+    <button @click="toggleEditEmail()">Edit</button>
+    <div v-show="editemail">
+      <input v-model="editedValue" type="text">
+      <button @click="edit('email', editedValue)">Submit</button>
+    </div>
+    <p>
+      Password: {{signedIn.passw}}
+    </p>
+    <button @click="toggleEditPass()">Edit</button>
+    <div v-show="editpass">
+      <input v-model="editedValue" type="text">
+      <button @click="edit('passw', editedValue)">Submit</button>
+    </div>
+    <p>
+      Account type: {{signedIn.acctype}}
+    </p>
+    <button @click="logOut">Log out</button>
+    <br>
+    <br>
   </div>
-  <p>
-    Email: {{signedIn.email}}
-  </p>
-  <button @click="toggleEditEmail()">Edit</button>
-  <div v-show="editemail">
-    <input v-model="editedValue" type="text">
-    <button @click="edit('email', editedValue)">Submit</button>
-  </div>
-  <p>
-    Password: {{signedIn.passw}}
-  </p>
-  <button @click="toggleEditPass()">Edit</button>
-  <div v-show="editpass">
-    <input v-model="editedValue" type="text">
-    <button @click="edit('passw', editedValue)">Submit</button>
-  </div>
-  <p>
-    Account type: {{signedIn.acctype}}
-  </p>
-  <button @click="logOut">Log out</button>
-  <br>
-  <br>
 
-  <div>
+  <div class="user-posts">
     <UserPosts />
   </div>
 
   <!-- if user is an admin it shows all the users and a delete account option -->
   <br>
-  <div v-if="signedIn.acctype === 'admin'">
-    <button @click="toggleAccs">View Accounts</button>
-    <div v-show="accounts">
-      <div>
-        <h3> All accounts </h3>
-        <h6> Enter username of the user you wish to delete. </h6>
-        <p> {{errorMsg}} </p>
-        <input type="text" v-model="selectedUser" placeholder="Username">
-        <button @click="deleteUser"> Delete user </button>
+  <div class="accounts">
+    <div v-if="signedIn.acctype === 'admin'">
+      <button @click="toggleAccs" v-show="!accounts">View Accounts</button>
+      <button @click="toggleAccs" v-show="accounts">Close Accounts</button>
+      <div v-show="accounts">
         <div>
-          <h4> Total users: {{totalUsers}} </h4>
-        </div>
-        <div v-for="user in users" :key="user.usern">
-          <p>
-            Username: {{user.usern}}
-          </p>
-          <p>
-            Email: {{user.email}}
-          </p>
-          <p>
-            Password: {{user.passw}}
-          </p>
-          <p>
-            Account type: {{user.acctype}}
-          </p>
-          <br>
+          <h3> All accounts </h3>
+          <h6> Enter username of the user you wish to delete. </h6>
+          <p> {{errorMsg}} </p>
+          <input type="text" v-model="selectedUser" placeholder="Username">
+          <button @click="deleteUser"> Delete user </button>
+          <div>
+            <h4> Total users: {{totalUsers}} </h4>
+          </div>
+          <div v-for="user in users" :key="user.usern">
+            <p>
+              Username: {{user.usern}}
+            </p>
+            <p>
+              Email: {{user.email}}
+            </p>
+            <p>
+              Password: {{user.passw}}
+            </p>
+            <p>
+              Account type: {{user.acctype}}
+            </p>
+            <br>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+</div>
 </template>
 
 <script>
@@ -184,4 +192,32 @@ export default {
 
 <style>
 
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+
+.details {
+  background: lightblue;
+  margin: 1%;
+  width: 30%;
+  border-style: ridge;
+}
+
+.user-posts {
+  background: lightblue;
+  margin: 1%;
+  width: 30%;
+  border-style: ridge;
+}
+
+.accounts {
+  background: lightblue;
+  margin: 1%;
+  width: 30%;
+  border-style: ridge;
+}
 </style>
