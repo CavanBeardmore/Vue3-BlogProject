@@ -39,7 +39,7 @@
     <br>
     <br>
     <label>Enter your password: </label>
-    <input type="text" placeholder="Only letters and numbers" v-model="password">
+    <input type="password" placeholder="Only letters and numbers" v-model="password">
     <div v-show="pwerror">
       <br>
       <br>

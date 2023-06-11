@@ -3,34 +3,65 @@
   <!-- account details -->
   <div class="details">
     <h3> Your account </h3>
-    <p>
-      Username: {{signedIn.usern}}
-    </p>
-    <button @click="toggleEditName()">Edit</button>
-    <div v-show="editname">
-      <input v-model="editedValue" type="text">
-      <button @click="edit('usern', editedValue)">Submit</button>
+    <!-- Displays username -->
+    <div v-show="!editname" class="detail-tile">
+      <h4>Username:</h4>
+      <p class="detail"> {{signedIn.usern}} </p>
+      <button @click="toggleEditName(signedIn.usern)" class="viewer">Edit</button>
     </div>
-    <p>
-      Email: {{signedIn.email}}
-    </p>
-    <button @click="toggleEditEmail()">Edit</button>
-    <div v-show="editemail">
+
+    <!-- Displays edit method for username -->
+    <div v-show="editname" class="detail-tile">
+      <h4>Username:</h4>
       <input v-model="editedValue" type="text">
-      <button @click="edit('email', editedValue)">Submit</button>
+      <button @click="edit('usern', editedValue)" class="closer">Submit</button>
+      <br>
+      <button @click="toggleEditName()" class="viewer">Edit</button>
     </div>
-    <p>
-      Password: {{signedIn.passw}}
-    </p>
-    <button @click="toggleEditPass()">Edit</button>
-    <div v-show="editpass">
+
+    <!-- Displays email -->
+    <div v-show="!editemail" class="detail-tile">
+      <h4> Email: </h4>
+      <p class="detail"> 
+        {{signedIn.email}}
+      </p>
+      <button @click="toggleEditEmail(signedIn.email)" class="viewer">Edit</button>
+    </div>
+
+    <!-- Displays edit method for email -->
+    <div v-show="editemail" class="detail-tile">
+      <h4> Email: </h4>
       <input v-model="editedValue" type="text">
-      <button @click="edit('passw', editedValue)">Submit</button>
+      <button @click="edit('email', editedValue)" class="closer">Submit</button>
+      <br>
+      <button @click="toggleEditEmail(signedIn.email)" class="viewer">Edit</button>
     </div>
-    <p>
-      Account type: {{signedIn.acctype}}
-    </p>
-    <button @click="logOut">Log out</button>
+
+    <!-- Displays password -->
+    <div v-show="!editpass" class="detail-tile">
+      <h4> Password: </h4>
+      <p class="detail">
+        {{signedIn.passw}}
+      </p>
+      <button @click="toggleEditPass(signedIn.passw)" class="viewer">Edit</button>
+    </div>
+
+    <!-- Displays edit method for password -->
+    <div v-show="editpass" class="detail-tile">
+      <h4> Password: </h4>
+      <input v-model="editedValue" type="text">
+      <button @click="edit('passw', editedValue)" class="closer">Submit</button>
+      <br>
+      <button @click="toggleEditPass(signedIn.passw)" class="viewer">Edit</button>
+    </div>
+
+    <div class="detail-tile">
+      <h4>Account type:</h4>
+      <p class="detail">
+        {{signedIn.acctype}}
+      </p>
+    </div>
+    <button @click="logOut" class="closer">Log out</button>
     <br>
     <br>
   </div>
@@ -43,37 +74,43 @@
   <br>
   <div class="accounts">
     <div v-if="signedIn.acctype === 'admin'">
-      <button @click="toggleAccs" v-show="!accounts">View Accounts</button>
-      <button @click="toggleAccs" v-show="accounts">Close Accounts</button>
+      <button @click="toggleAccs" v-show="!accounts" class="viewer">View Accounts</button>
+      <button @click="toggleAccs" v-show="accounts" class="closer">Close Accounts</button>
       <div v-show="accounts">
         <div>
           <h3> All accounts </h3>
           <h6> Enter username of the user you wish to delete. </h6>
+        </div>
+        <div class="detail-tile">
           <p> {{errorMsg}} </p>
           <input type="text" v-model="selectedUser" placeholder="Username">
-          <button @click="deleteUser"> Delete user </button>
-          <div>
-            <h4> Total users: {{totalUsers}} </h4>
+          <button @click="deleteUser" class="closer"> Delete user </button>
+        </div>
+          <div class="detail-tile">
+            <h4 class="detail"> Total users: {{totalUsers}} </h4>
           </div>
-          <div v-for="user in users" :key="user.usern">
-            <p>
-              Username: {{user.usern}}
+          <div v-for="user in users" :key="user.usern" class="detail-tile">
+            <h4>Username: </h4>
+            <p class="detail">
+              {{user.usern}}
             </p>
-            <p>
-              Email: {{user.email}}
+            <h4>Email: </h4>
+            <p class="detail">
+              {{user.email}}
             </p>
-            <p>
-              Password: {{user.passw}}
+            <h4>Password: </h4>
+            <p class="detail">
+              {{user.passw}}
             </p>
-            <p>
-              Account type: {{user.acctype}}
+            <h4>Account type: </h4>
+            <p class="detail">
+              {{user.acctype}}
             </p>
             <br>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
 </div>
 </template>
@@ -129,32 +166,41 @@ export default {
       }
       store.commit('EDIT', { value, newValue})
       editedValue.value = ''
+      editname.value = false
+      editpass.value = false
+      editemail.value = false
       } else {
         if (matches(newValue) !== true) {
         return
       }
       store.commit('EDIT', { value, newValue })
       editedValue.value = ''
+      editname.value = false
+      editpass.value = false
+      editemail.value = false
       }
     }
 
     //functions that toggle the edit fields for username, email and password, only 1 edit field can be open at one time
-    function toggleEditName() {
+    function toggleEditName(name) {
       editname.value = !editname.value
+      editedValue.value = name
       if(editpass.value === true || editemail.value === true) {
         editemail.value = false
         editpass.value = false
       }
     }
-    function toggleEditEmail() {
+    function toggleEditEmail(email) {
       editemail.value = !editemail.value
+      editedValue.value = email
       if(editname.value === true || editpass.value === true) {
         editpass.value = false
         editname.value = false
       }
     }
-    function toggleEditPass() {
+    function toggleEditPass(password) {
       editpass.value = !editpass.value
+      editedValue.value = password
       if(editname.value === true || editemail.value === true) {
         editemail.value = false
         editname.value = false
@@ -219,5 +265,58 @@ export default {
   margin: 1%;
   width: 30%;
   border-style: ridge;
+}
+
+.viewer {
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border-style: groove;
+}
+
+.viewer:hover {
+  color: green;
+  background-color: lightgrey;
+}
+
+.closer {
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border-style: groove;                    
+}
+
+.closer:hover {
+  color: red;
+  background-color: lightgrey;
+}
+
+input{
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+h3 {
+  text-decoration: underline;
+}
+
+.detail-tile {
+  background-color: lightgray;
+  border-radius: 5px;
+  border-style: groove;
+  width: 300px;
+  margin: 15px auto;
+  padding: 15px;
+}
+
+.detail {
+  background-color: whitesmoke;
+  border-radius: 5px;
+  width: fit-content;
+  margin: 10px auto;
+  padding: 8px;
+  border-style: groove;
 }
 </style>

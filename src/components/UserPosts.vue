@@ -1,56 +1,61 @@
 <template>
   <div v-if="user.acctype === 'admin' || user.acctype === 'creator'">
-    <button @click="showPosts" v-show="!ownPosts">View my posts</button>
+    <button @click="showPosts" v-show="!ownPosts" class="viewer">View my posts</button>
     <div v-show="ownPosts">
-        <button @click="showPosts">Close my posts </button>
-        <div v-if="posts.length">
+        <button @click="showPosts" class="closer">Close my posts </button>
+
+
+        <div v-if="posts.length" class="post-detail-tile">
             <div v-for="post in posts" :key="post.id">
                 <div class="header">
-                    <h2>{{post.title}}</h2>
-                    <h4>Created by {{post.creator}}</h4>
+                    <h2 class="detail">{{post.title}}</h2>
+                    <h4 class="detail">Created by {{post.creator}}</h4>
                 </div>
                 <div class="body">
-                    <p>{{post.content}}</p>
-                    <div v-for="tag in post.tags" :key="tag" class="tags">
-                        <h6 class="tag"> #{{tag}} </h6>
+                    <p class="detail">{{post.content}}</p>
+                    <div class="detail">
+                        <h4> Tags: </h4>
+                        <div v-for="tag in post.tags" :key="tag" class="tags">
+                            <h6> #{{tag}} </h6>
+                        </div>
                     </div>
-                    <h6> {{post.date}} </h6>
+                    <h6 class="detail"> {{post.date}} </h6>
                 </div>
                 <div v-if="user.acctype === 'admin'">
-                    <p> Post ID:{{post.id}}</p>
+                    <p class="detail"> Post ID:{{post.id}}</p>
                 </div>
-                <button @click="deletePost(post)">Delete</button>
+                <button @click="deletePost(post)" class="closer">Delete</button>
                 <br>
                 <br>
-                <button @click="enableEdit(post)" v-show="!post.edit">Edit</button>
+                <button @click="enableEdit(post)" v-show="!post.edit" class="viewer">Edit</button>
                 <div v-show="post.edit">
-                    <button @click="disableEdit(post)" v-show="post.edit">Close Edit</button>
+                    <button @click="disableEdit(post)" v-show="post.edit" class="closer">Close Edit</button>
                     <h4> Title </h4>
                     <input type="text" v-model="editTitle" class="input-title" placeholder="Why do cats hate Mondays?">
-                    <button @click="submitChange(post, editTitle, 5, 40, 'title')">Submit changes</button>
+                    <button @click="submitChange(post, editTitle, 5, 40, 'title')" class="viewer">Submit changes</button>
                     <br>
                     <h4> Content </h4>
-                    <textarea rows="4" cols="100" v-model="editContent" placeholder="Garfields influence upon the feline population cannot be underestimated."></textarea>
-                    <button @click="submitChange(post, editContent, 500, 6000, 'content')">Submit changes</button>
+                    <textarea rows="30" cols="65" v-model="editContent" placeholder="Garfields influence upon the feline population cannot be underestimated."></textarea>
+                    <button @click="submitChange(post, editContent, 500, 6000, 'content')" class="viewer">Submit changes</button>
                     <br>
                     <p style="color: red"> {{editError}} </p>
                     <h4> Content tags </h4>
                     <input type="text" v-model="editTag" class="cont-tags-input" placeholder="Enter a tag relevant to your post and click add tag.">
                     <br>
                     <br>
-                    <button>Add Tag</button>
+                    <button class="viewer">Add Tag</button>
                     <br>
                     <br>
                     <input type="text" v-model="deletedTag" class="cont-tags-input" placeholder="Enter a tag you wish to delete.">
                     <br>
                     <br>
-                    <button @click="deleteTag(post)">Delete Tag</button>
+                    <button @click="deleteTag(post)" class="closer">Delete Tag</button>
                     <p style=" color: red ">{{editTagError}} </p>
-                    <div class="list-container" v-show="editTags.length">
+                    <div class="detail" v-show="editTags.length">
                         <h5> Your Tags: </h5>
-                        <li v-for="tag in editTags" :key="tag" class="tag-list">
-                            {{tag}}
-                        </li>
+                        <p v-for="tag in editTags" :key="tag" class="tag-list">
+                            #{{tag}}
+                        </p>
                     </div>
                 </div>
                 
@@ -79,6 +84,7 @@ export default {
 
         //boolean refs
         const ownPosts = ref(false)
+        const editing = ref(false)
 
         //string refs
         const userPosts = ref('')
@@ -97,6 +103,7 @@ export default {
 
         function enableEdit(post) {
             post.toggleEditPost()
+            editing.value = true
             editTitle.value = post.title
             editContent.value = post.content
             editTags.value = post.tags
@@ -104,6 +111,7 @@ export default {
 
         function disableEdit(post) {
             post.toggleEditPost()
+            editing.value = false
             editTitle.value = ''
             editContent.value = ''
             editTags.value = ''
@@ -156,12 +164,20 @@ export default {
             editTagError,
             editTag,
             submitChange,
-            editError
+            editError,
+            editing
         }
     }
 }
 </script>
 
 <style>
-
+.post-detail-tile {
+  background-color: lightgray;
+  border-radius: 5px;
+  border-style: groove;
+  width: 500px;
+  margin: 15px auto;
+  padding: 15px;
+}
 </style>
