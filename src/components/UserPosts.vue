@@ -5,30 +5,26 @@
         <button @click="showPosts" class="closer">Close my posts </button>
 
 
-        <div v-if="posts.length" class="post-detail-tile">
+        <div v-if="posts.length">
             <div v-for="post in posts" :key="post.id">
-                <div class="header">
+                <div v-show="!post.edit" class="post-detail-tile">
                     <h2 class="detail">{{post.title}}</h2>
                     <h4 class="detail">Created by {{post.creator}}</h4>
-                </div>
-                <div class="body">
                     <p class="detail">{{post.content}}</p>
-                    <div class="detail">
-                        <h4> Tags: </h4>
-                        <div v-for="tag in post.tags" :key="tag" class="tags">
-                            <h6> #{{tag}} </h6>
-                        </div>
+                    <h4> Tags: </h4>
+                    <div v-for="tag in post.tags" :key="tag" class="tags">
+                        <h6> #{{tag}} </h6>
                     </div>
                     <h6 class="detail"> {{post.date}} </h6>
+                    <div v-if="user.acctype === 'admin'">
+                        <p class="detail"> Post ID:{{post.id}}</p>
+                    </div>
+                    <button @click="deletePost(post)" class="closer">Delete</button>
+                    <br>
+                    <br>
+                    <button @click="enableEdit(post)" v-show="!post.edit" class="viewer">Edit</button>
                 </div>
-                <div v-if="user.acctype === 'admin'">
-                    <p class="detail"> Post ID:{{post.id}}</p>
-                </div>
-                <button @click="deletePost(post)" class="closer">Delete</button>
-                <br>
-                <br>
-                <button @click="enableEdit(post)" v-show="!post.edit" class="viewer">Edit</button>
-                <div v-show="post.edit">
+                <div v-show="post.edit" class="post-detail-tile">
                     <button @click="disableEdit(post)" v-show="post.edit" class="closer">Close Edit</button>
                     <h4> Title </h4>
                     <input type="text" v-model="editTitle" class="input-title" placeholder="Why do cats hate Mondays?">

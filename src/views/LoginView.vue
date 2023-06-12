@@ -2,52 +2,54 @@
   
   <div class="sign-in">
     <h3> Sign in </h3>
-    <label>Enter your username: </label>
-    <input type="text" placeholder="JaneSmith18" v-model="signInUser">
+    <div class="login-cont">
+      <div class="unit1">
+        <h5>Enter your username: </h5>
+        <input type="text" placeholder="JaneSmith18" v-model="signInUser">
+      </div>
+      <div class="unit2">
+        <h5>Enter your password: </h5>
+        <input type="password" placeholder="******" v-model="signInPass">
+      </div>
+    </div>
+    <button @click="logIn(signInUser, signInPass)" class="viewer">Log In</button>
     <br>
     <br>
-    <label>Enter your password: </label>
-    <input type="password" placeholder="******" v-model="signInPass">
-    <br>
-    <br>
-    <button @click="logIn(signInUser, signInPass)">Log In</button>
-    <br>
-    <br>
-    <div v-show="loginerror">
-      <p style="color: red"> {{ loginerror }} </p>
+    <div v-show="loginerror" class="detail">
+      <h5 style="color: red"> {{ loginerror }} </h5>
     </div>
   </div>
 
   <div class="acc-create">
-    <h4> Don't have an account? </h4>
-    <label>Enter your username: </label>
+    <h4 class="no-account"> Don't have an account? </h4>
+    <h5>Enter your username: </h5>
     <input type="text" placeholder="Only letters and numbers" v-model="username">
     <div v-show="unerror">
       <br>
       <br>
-      <p style="color: red"> {{ unerror }} </p>
+      <h5 style="color: red" class="detail"> {{ unerror }} </h5>
     </div>
     <br>
     <br>
-    <label>Enter your email: </label>
+    <h5>Enter your email: </h5>
     <input type="text" placeholder="Must be a valid email" v-model="email">
     <div v-show="emerror">
       <br>
       <br>
-      <p style="color: red"> {{ emerror }} </p>
+      <h5 style="color: red" class="detail"> {{ emerror }} </h5>
     </div>
     <br>
     <br>
-    <label>Enter your password: </label>
+    <h5>Enter your password: </h5>
     <input type="password" placeholder="Only letters and numbers" v-model="password">
     <div v-show="pwerror">
       <br>
       <br>
-      <p style="color: red"> {{ pwerror }} </p>
+      <h5 style="color: red" class="detail"> {{ pwerror }} </h5>
     </div>
     <br>
     <br>
-    <label for="account-type">Choose account type: </label>
+    <h5>Choose account type: </h5>
     <select name="account-type" id="account-type" v-model="role">
       <option value="user" selected>User</option>
       <option value="creator">Creator</option>
@@ -55,11 +57,11 @@
     </select>
     <br>
     <br>
-    <button @click="createAcc(username, email, password, role)">Create account</button>
+    <button @click="createAcc(username, email, password, role)" class="viewer">Create account</button>
     <div v-show="accmessage">
       <br>
       <br>
-      <p style="color: green"> {{ accmessage }} </p>
+      <h5 style="color: green" class="detail"> {{ accmessage }} </h5>
     </div>
     <br>
     <br>
@@ -181,15 +183,34 @@ export default {
 .sign-in{
   background: lightgray;
   padding: 30px;
-  width: fit-content;
+  width: 50%;
   margin: 10px auto;
   border-radius: 10px;
   }
 .acc-create{
   background: lightgray;
   padding: 30px;
-  width: fit-content;
+  width: 50%;
   margin: 10px auto;
   border-radius: 10px;
+  }
+  .no-account {
+    text-decoration: underline;
+  }
+
+  .login-cont {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .unit1{
+    margin-right: 10%;
+    margin-bottom: 5%;
+  }
+
+  .unit2 {
+    margin-left: 10%;
+    margin-bottom: 5%;
   }
 </style>

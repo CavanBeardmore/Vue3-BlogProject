@@ -4,23 +4,25 @@
     <!-- create post section -->
     <div class="creator-controls" v-if="user.acctype === 'creator' || user.acctype === 'admin'">
       <div v-show="!create">
-        <button @click="toggleCreate">Create Post</button>
+        <button @click="toggleCreate" class="viewer">Create Post</button>
         <br>
         <br>
       </div>
       <div v-show="create">
-        <button @click="toggleCreate">View Posts</button>
+        <button @click="toggleCreate" class="viewer">View Posts</button>
         <br>
         <br>
-        <button @click="toggleRequirements"> View Requirements </button>
-        <div v-show="requirements">
-          <p> The title is 40 characters maximum and more than 5 characters minimum. </p>
-          <p> The content section is 6000 characters maximum and 500 characters minimum. </p>
-          <p> There is a minimum of 1 tag and a maximum of 3 tags.</p>
+        <button @click="toggleRequirements" class="viewer" v-show="!requirements"> View Requirements </button>
+        <button @click="toggleRequirements" class="closer" v-show="requirements">Hide Requirements</button>
+        <div v-show="requirements" class="detail-tile">
+          <h3> Requirements: </h3>
+          <p class="detail"> The title is 40 characters maximum and more than 5 characters minimum. </p>
+          <p class="detail"> The content section is 6000 characters maximum and 500 characters minimum. </p>
+          <p class="detail"> There is a minimum of 1 tag and a maximum of 3 tags.</p>
         </div>
         <br>
         <br>
-        <button @click="publishPost(title, content, tags)">Publish Post</button>
+        <button @click="publishPost(title, content, tags)" class="viewer">Publish Post</button>
         <br>
         <h4> Title </h4>
         <input type="text" v-model="title" class="input-title" placeholder="Why do cats hate Mondays?">
@@ -32,13 +34,13 @@
         <input type="text" v-model="tag" class="cont-tags-input" placeholder="Enter a tag relevant to your post and click add tag.">
         <br>
         <br>
-        <button @click="addTag">Add Tag</button>
+        <button @click="addTag" class="viewer">Add Tag</button>
         <br>
         <br>
         <input type="text" v-model="deletedTag" class="cont-tags-input" placeholder="Enter a tag you wish to delete.">
         <br>
         <br>
-        <button @click="deleteTag">Delete Tag</button>
+        <button @click="deleteTag" class="closer">Delete Tag</button>
         <div class="list-container" v-show="tags.length">
           <h5> Your Tags: </h5>
           <li v-for="tag in tags" :key="tag" class="tag-list">
@@ -61,7 +63,7 @@
       <input type="text" placeholder="" v-model="searchInput">
       <br>
       <br>
-      <button @click="searchFunc">Search</button>
+      <button @click="searchFunc" class="viewer">Search</button>
       <br>
       <p style="color: red">{{searchError}}</p>
       <div v-for="post in filteredSearch" :key="post.id">
