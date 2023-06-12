@@ -74,7 +74,9 @@
   <br>
   <div class="accounts">
     <div v-if="signedIn.acctype === 'admin'">
+      <br v-show="!accounts">
       <button @click="toggleAccs" v-show="!accounts" class="viewer">View Accounts</button>
+      <br>
       <button @click="toggleAccs" v-show="accounts" class="closer">Close Accounts</button>
       <div v-show="accounts">
         <div>
@@ -82,7 +84,7 @@
           <h6> Enter username of the user you wish to delete. </h6>
         </div>
         <div class="detail-tile">
-          <p> {{errorMsg}} </p>
+          <h5 class="detail" style=" color: red " v-show="errorMsg"> {{errorMsg}} </h5>
           <input type="text" v-model="selectedUser" placeholder="Username">
           <button @click="deleteUser" class="closer"> Delete user </button>
         </div>
@@ -210,6 +212,7 @@ export default {
     //another toggle func for accounts viewing
     function toggleAccs() {
       accounts.value = !accounts.value
+      errorMsg.value = ''
     }
 
     return {
@@ -245,25 +248,36 @@ export default {
   justify-content: space-evenly;
 }
 
-
 .details {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex-grow: .65;
   background: lightblue;
   margin: 1%;
-  width: 30%;
+  width: auto;
   border-style: ridge;
 }
 
 .user-posts {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex-grow: 1;
   background: lightblue;
   margin: 1%;
-  width: 30%;
+  width: auto;
   border-style: ridge;
 }
 
 .accounts {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex-grow: 1;
   background: lightblue;
   margin: 1%;
-  width: 30%;
+  width: auto;
   border-style: ridge;
 }
 
@@ -272,6 +286,8 @@ export default {
   margin-top: 10px;
   border-radius: 5px;
   border-style: groove;
+  margin: 0 auto;
+  width: fit-content;   
 }
 
 .viewer:hover {
@@ -281,9 +297,10 @@ export default {
 
 .closer {
   padding: 5px;
-  margin-top: 10px;
+  margin: 0 auto;
   border-radius: 5px;
-  border-style: groove;                    
+  border-style: groove;
+  width: fit-content;          
 }
 
 .closer:hover {

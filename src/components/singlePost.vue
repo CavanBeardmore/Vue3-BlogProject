@@ -1,15 +1,15 @@
 <template>
     <div class="post" @dblclick="view(post.id)">
-        <h3 class="title" @click="view(post.id)">{{post.title}}</h3>
-        <h4> Created by {{post.creator}} </h4>
-        <h4>{{snippet}}</h4>
-        <h5> Tags: </h5>
+        <h3 class="detail" @click="view(post.id)">{{post.title}}</h3>
+        <h4 class="detail"> Created by {{post.creator}} </h4>
+        <h4 class="detail">{{snippet}}</h4>
+        <h5 class="detail"> Tags: </h5>
         <div v-for="tag in post.tags" :key="tag"> 
             <h6>#{{tag}}</h6>
         </div>
-        <h6> {{post.date}} </h6>
+        <h6 class="detail"> {{post.date}} </h6>
         <div v-if="user.acctype === 'admin'">
-        <p>ID: {{post.id}}</p>
+        <p class="detail">ID: {{post.id}}</p>
         </div>
     </div>
     <div v-show="user.usern === post.creator || user.acctype === 'admin'">
@@ -57,5 +57,5 @@ export default {
 </script>
 
 <style>
- 
+
 </style>

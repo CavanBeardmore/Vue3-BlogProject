@@ -47,9 +47,9 @@
             {{tag}}
           </li>
         </div>
-        <h5 style="color: red">{{tagError}}</h5>
-        <h5 style="color: green">{{postMessage}}</h5>
-        <h5 style="color: red">{{postError}}</h5>
+        <h5 class="detail" style="color: red" v-show="tagError">{{tagError}}</h5>
+        <h5 class="detail" style="color: green" v-show="postMessage">{{postMessage}}</h5>
+        <h5 class="detail" style="color: red" v-show="postError">{{postError}}</h5>
       </div>
     </div>
 
@@ -65,13 +65,13 @@
       <br>
       <button @click="searchFunc" class="viewer">Search</button>
       <br>
-      <p style="color: red">{{searchError}}</p>
-      <div v-for="post in filteredSearch" :key="post.id">
-        <p>{{post.title}}</p>
-        <p>{{post.content}}</p>
-        <p>{{post.creator}}</p>
-        <p>{{post.tags}}</p>
-        <p>{{post.id}}</p>
+      <h5 class="detail" style="color: red" v-show="searchError">{{searchError}}</h5>
+      <div v-for="post in filteredSearch" :key="post.id" class="detail-tile">
+        <p class="detail" >{{post.title}}</p>
+        <p class="detail">{{post.content}}</p>
+        <p class="detail">{{post.creator}}</p>
+        <p class="detail">{{post.tags}}</p>
+        <p class="detail">{{post.id}}</p>
       </div>
     </div>
 
@@ -83,7 +83,7 @@
         </div>
       </div>
       <div v-else>
-        <p> There are no posts here. </p>
+        <h5 class="detail"> There are no posts here. </h5>
       </div>
     </div>
 
@@ -199,7 +199,6 @@ export default {
       } else {
         tagError.value = 'Tag must not be empty, must compromise of only letters, and be a minimum of 3 characters long.'
       }
-
     }
 
     function deleteTag() {
