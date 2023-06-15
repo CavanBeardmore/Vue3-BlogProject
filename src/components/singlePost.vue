@@ -1,13 +1,17 @@
 <template>
     <div class="post" @dblclick="view(post.id)">
-        <h3 class="detail" @click="view(post.id)">{{post.title}}</h3>
-        <h4 class="detail"> Created by {{post.creator}} </h4>
-        <h4 class="detail">{{snippet}}</h4>
-        <h5 class="detail"> Tags: </h5>
-        <div v-for="tag in post.tags" :key="tag"> 
-            <h6>#{{tag}}</h6>
+        <h3 class="post-title" @click="view(post.id)">{{post.title}}</h3>
+        <div class="post-info">
+            <h4 class="created-by"> Created by {{post.creator}} </h4>
+            <h6 class="date"> {{post.date}} </h6>
         </div>
-        <h6 class="detail"> {{post.date}} </h6>
+        <h4 class="detail">{{snippet}}</h4>
+        <div class="tag-list"> 
+            <p class="tag">#{{post.tags[0]}}</p>
+            <p class="tag">#{{post.tags[1]}}</p>
+            <p class="tag">#{{post.tags[2]}}</p>
+        </div>
+        
         <div v-if="user.acctype === 'admin'">
         <p class="detail">ID: {{post.id}}</p>
         </div>
@@ -57,5 +61,82 @@ export default {
 </script>
 
 <style>
+  .post{
+    border-radius: 10px;
+    background-color: #c9d4da;
+    width: 70%;
+    margin: 20px auto;
+    border-style: ridge;
+    padding: 10px;
+  }
+
+  .post:hover{
+    border-style: solid;
+    background-color: #becbd2;
+  }
+
+  .post:hover{
+    transform: scale(1.015);
+  }
+
+.post-title {
+    background-color: whitesmoke;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 8px;
+    border-style: groove;
+    }
+
+.post-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.created-by {
+    flex-basis: 40%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 8px;
+    border-style: groove;
+}
+
+.date {
+    flex-basis: 20%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 10px auto;
+    padding-top: 9px;
+    font-size: small;
+    border-style: groove;
+}
+
+.tag-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.tag {
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: whitesmoke;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 5px;
+    font-size: small;
+    border-style: groove;
+}
 
 </style>

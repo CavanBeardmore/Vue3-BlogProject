@@ -1,10 +1,4 @@
 <template>
-  <nav>
-    <router-link to="/home">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/posts">Posts</router-link> |
-    <router-link to="/account">Account</router-link>
-  </nav>
   <router-view/>
 </template>
 
@@ -18,7 +12,12 @@
 }
 
 nav {
-  padding: 30px;
+  padding: 10px;
+  background-color: #17B9B1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 nav a {
@@ -26,7 +25,18 @@ nav a {
   color: #2c3e50;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+router-link{
+  flex-basis: 20%;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
+
+.router{
+  background-color: #C2D5D4;
+  padding: 15px;
+  width: fit-content;
+  border-radius: 10px;
+  border-style:ridge;
+}
+
 </style>

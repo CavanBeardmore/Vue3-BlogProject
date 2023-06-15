@@ -1,8 +1,22 @@
 <template>
-  <div class="back">
+  <nav>
+    <div class="router">
+      <router-link to="/home">Home</router-link> 
+    </div>
+    <div class="router">  
+      <router-link to="/about">About</router-link> 
+    </div>
+    <div class="router">
+      <router-link to="/posts">Posts</router-link> 
+    </div>
+    <div class="router">
+      <router-link to="/account">Account</router-link>
+    </div>
+  </nav>
+  <div class="posts-container">
 
     <!-- create post section -->
-    <div class="creator-controls" v-if="user.acctype === 'creator' || user.acctype === 'admin'">
+    <div class="create" v-if="user.acctype === 'creator' || user.acctype === 'admin'">
       <div v-show="!create">
         <button @click="toggleCreate" class="viewer">Create Post</button>
         <br>
@@ -41,11 +55,11 @@
         <br>
         <br>
         <button @click="deleteTag" class="closer">Delete Tag</button>
-        <div class="list-container" v-show="tags.length">
+        <div v-show="tags.length">
           <h5> Your Tags: </h5>
-          <li v-for="tag in tags" :key="tag" class="tag-list">
-            {{tag}}
-          </li>
+          <div v-for="tag in tags" :key="tag">
+            <h6> #{{tag}} </h6>
+          </div>
         </div>
         <h5 class="detail" style="color: red" v-show="tagError">{{tagError}}</h5>
         <h5 class="detail" style="color: green" v-show="postMessage">{{postMessage}}</h5>
@@ -54,7 +68,7 @@
     </div>
 
     <!-- search -->
-    <div v-show="!create">
+    <div v-show="!create" class="search">
       <select name="search-criteria" id="search-criteria" v-model="criteria">
         <option value="Tag" selected>Tag</option>
         <option value="Title">Title</option>
@@ -66,19 +80,16 @@
       <button @click="searchFunc" class="viewer">Search</button>
       <br>
       <h5 class="detail" style="color: red" v-show="searchError">{{searchError}}</h5>
-      <div v-for="post in filteredSearch" :key="post.id" class="detail-tile">
-        <p class="detail" >{{post.title}}</p>
-        <p class="detail">{{post.content}}</p>
-        <p class="detail">{{post.creator}}</p>
-        <p class="detail">{{post.tags}}</p>
-        <p class="detail">{{post.id}}</p>
+      <div v-for="post in filteredSearch" :key="post.id">
+        <SinglePost :post="post" />
       </div>
     </div>
 
     <!-- posts section -->
-    <div class="post-back" v-show="!create">
+    <div class="posts" v-show="!create">
       <div v-if="posts.length">
-        <div v-for="post in posts" :key="post.title" class="post-tile">
+        <h3>Posts:</h3>
+        <div v-for="post in posts" :key="post.title">
           <SinglePost :post="post" />
         </div>
       </div>
@@ -92,6 +103,7 @@
 
 <script>
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router'
 import { ref, computed, onMounted } from 'vue';
 import { hasLength, lessThan, doesExist, moreThan } from '../helperFuncs';
 import SinglePost from '../components/SinglePost.vue';
@@ -102,6 +114,7 @@ export default {
   setup() {
     //use 
     const store = useStore()
+    const router = useRouter()
 
     //computed
     const posts = computed(() => store.state.posts)
@@ -135,6 +148,16 @@ export default {
     }
     function toggleRequirements() {
       requirements.value = !requirements.value
+    }
+
+    //provides a snippet of post content to save space
+    function snippet(post) {
+        return post.content.substring(0, 400) + '...'
+    }
+
+    //redirects to a full post view page
+    function view(post) {
+        router.push({ name: 'SinglePostView', params: { id: post } })
     }
 
     /* search function, checks the value of criteria (selected in the drop down), and then runs code dependant on this and assigns the filteredSearch variable
@@ -173,7 +196,7 @@ export default {
         postError.value = ''
         title.value = ''
         content.value = ''
-        tags.value = ''
+        tags.value = []
       } else {
         postMessage.value = ''
         postError.value = 'Post does not meet requirements.'
@@ -202,6 +225,7 @@ export default {
     }
 
     function deleteTag() {
+      console.log(tags.value)
       if (tags.value.includes(deletedTag.value)) {
           const index = tags.value.indexOf(deletedTag.value)
           tags.value.splice(index, 1)
@@ -231,33 +255,51 @@ export default {
       filteredSearch,
       searchError,
       deleteTag,
-      deletedTag
+      deletedTag,
+      snippet,
+      view
   }
 }
 }
 </script>
 
 <style>
-  .post-tile {
-    border-radius: 10px;
-    background-color: #c9d4da;
-    width: 70%;
-    margin: auto;
+
+  .posts-container{
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .posts {
+    margin-top: .5em;
+    flex-basis: 30%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: #B7EEF8;
     border-style: ridge;
-    padding: 10px;
   }
 
-  .post-tile:hover{
-    border-style: solid;
-    background-color: #becbd2;
+  .search {
+    margin-top: .5em;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex-basis: 30%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: #B7EEF8;
+    border-style: ridge;
   }
 
-  .post-tile:hover .title{
-    text-decoration: underline;
-  }
-
-  .back{
-    background-color: #f4f6f7;
+  .create {
+    margin-top: .5em;
+    padding-top: 10px;
+    flex-basis: 30%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: #B7EEF8;
+    border-style: ridge;
   }
 
   .input-title{

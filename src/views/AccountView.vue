@@ -1,4 +1,18 @@
 <template>
+  <nav>
+    <div class="router">
+      <router-link to="/home">Home</router-link> 
+    </div>
+    <div class="router">  
+      <router-link to="/about">About</router-link> 
+    </div>
+    <div class="router">
+      <router-link to="/posts">Posts</router-link> 
+    </div>
+    <div class="router">
+      <router-link to="/account">Account</router-link>
+    </div>
+  </nav>
 <div class="container">
   <!-- account details -->
   <div class="details">
@@ -249,35 +263,38 @@ export default {
 }
 
 .details {
+  flex-basis: 30%;
+  flex-grow: 0;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  flex-grow: .65;
   background: lightblue;
   margin: 1%;
-  width: auto;
   border-style: ridge;
 }
 
 .user-posts {
+  flex-basis: 30%;
+  flex-grow: 0;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  flex-grow: 1;
   background: lightblue;
   margin: 1%;
-  width: auto;
   border-style: ridge;
 }
 
 .accounts {
+  flex-basis: 30%;
+  flex-grow: 0;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  flex-grow: 1;
   background: lightblue;
   margin: 1%;
-  width: auto;
   border-style: ridge;
 }
 
@@ -291,8 +308,8 @@ export default {
 }
 
 .viewer:hover {
-  color: green;
-  background-color: lightgrey;
+  color: #ECF3F1;
+  background-color: #1EA086;
 }
 
 .closer {
@@ -304,8 +321,8 @@ export default {
 }
 
 .closer:hover {
-  color: red;
-  background-color: lightgrey;
+  color: #ECF3F1;
+  background-color: #C6190E;
 }
 
 input{
