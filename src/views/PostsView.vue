@@ -19,15 +19,14 @@
     <div class="create" v-if="user.acctype === 'creator' || user.acctype === 'admin'">
       <div v-show="!create">
         <button @click="toggleCreate" class="viewer">Create Post</button>
-        <br>
-        <br>
       </div>
       <div v-show="create">
-        <button @click="toggleCreate" class="viewer">View Posts</button>
-        <br>
-        <br>
-        <button @click="toggleRequirements" class="viewer" v-show="!requirements"> View Requirements </button>
-        <button @click="toggleRequirements" class="closer" v-show="requirements">Hide Requirements</button>
+        <div class="button-container">
+          <button @click="toggleCreateExpand" class="button-close">Close</button>
+          <button @click="toggleExpand" v-show="!expand" class="button">Expand Posts</button>
+          <button @click="toggleRequirements" class="button" v-show="!requirements"> View Requirements </button>
+          <button @click="toggleRequirements" class="button-close" v-show="requirements">Hide Requirements</button>
+        </div>
         <div v-show="requirements" class="detail-tile">
           <h3> Requirements: </h3>
           <p class="detail"> The title is 40 characters maximum and more than 5 characters minimum. </p>
@@ -68,11 +67,11 @@
     </div>
 
     <!-- search -->
-    <div v-show="!create" class="search">
+    <div v-show="!expand" class="search">
       <select name="search-criteria" id="search-criteria" v-model="criteria">
-        <option value="Tag" selected>Tag</option>
-        <option value="Title">Title</option>
-        <option value="Creator">Creator</option>
+        <option class="option" value="Tag" selected>Tag</option>
+        <option class="option" value="Title">Title</option>
+        <option class="option" value="Creator">Creator</option>
       </select>
       <input type="text" placeholder="" v-model="searchInput">
       <br>
@@ -86,7 +85,7 @@
     </div>
 
     <!-- posts section -->
-    <div class="posts" v-show="!create">
+    <div class="posts" v-show="!expand">
       <div v-if="posts.length">
         <h3>Posts:</h3>
         <div v-for="post in posts" :key="post.title">
@@ -123,6 +122,7 @@ export default {
     //boolean refs
     const create = ref(false)
     const requirements = ref(false)
+    const expand = ref(false)
 
     //input refs
     const title = ref('')
@@ -148,6 +148,13 @@ export default {
     }
     function toggleRequirements() {
       requirements.value = !requirements.value
+    }
+    function toggleExpand() {
+      expand.value = !expand.value
+    }
+    function toggleCreateExpand() {
+      expand.value = false
+      create.value = false
     }
 
     //provides a snippet of post content to save space
@@ -257,7 +264,10 @@ export default {
       deleteTag,
       deletedTag,
       snippet,
-      view
+      view,
+      expand,
+      toggleExpand,
+      toggleCreateExpand,
   }
 }
 }
@@ -318,4 +328,54 @@ export default {
     margin: auto;
     text-align: left;
   }
+
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+
+  .button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex-basis: 30%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-style: groove;
+    width: fit-content; 
+  }
+
+  .button-close {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex-basis: 30%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-style: groove;
+    width: fit-content; 
+  }
+
+  .button:hover {
+  color: #ECF3F1;
+  background-color: #1EA086;
+}
+
+.button-close:hover {
+  color: #ECF3F1;
+  background-color: #C6190E;
+}
+
+select {
+  padding: 4px;
+  border-radius: 5px;
+}
+
+
 </style>

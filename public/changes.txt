@@ -12,3 +12,5 @@ toggling the view of search, view posts create posst needs to change to a univer
 
 
 change deleteuser mutation
+
+allow for posts search to have spaces and or lower or upper case characters
