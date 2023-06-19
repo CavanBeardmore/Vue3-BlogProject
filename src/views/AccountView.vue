@@ -149,11 +149,14 @@ export default {
     const users = computed(() => store.state.users);
     const signedIn = computed(() => store.state.signedIn)
     const totalUsers = computed(() => store.getters.totalUsers)
-    const errorMsg = computed(() => store.state.errorMsg)
+
+    //store refs
+    const userArray = ref(users)
 
     // string refs
     const selectedUser = ref('')
     const editedValue = ref('')
+    const errorMsg = ref('')
 
     //boolean refs
     const editname = ref(false)
@@ -163,8 +166,20 @@ export default {
 
     //delete user function
     function deleteUser() {
-      store.commit('DELETE_USER', selectedUser.value)
-      selectedUser.value = ''
+        if (signedIn.usern !== selectedUser.value) {
+            const filteredUsers = userArray.value.filter((user) => user.usern !== selectedUser.value)
+            console.log(filteredUsers)
+            console.log(selectedUser.value)
+            if (filteredUsers.length === userArray.value.length) {
+                errorMsg.value = 'This user does not exist, please change this and try again.'
+            } else {
+                store.commit('DELETE_USER', filteredUsers)
+                selectedUser.value = ''
+                errorMsg.value = 'User deleted!'
+            }
+        } else if (signedIn.usern === selectedUser.value){
+          errorMsg.value = 'You have entered your own username, please change this and try again.'
+        } 
     }
 
     //logout function

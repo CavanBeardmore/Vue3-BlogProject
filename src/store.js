@@ -26,18 +26,8 @@ const store = createStore({
         }
     },
     mutations: {
-        DELETE_USER(state, selectedUser) {
-            if (state.signedIn.usern !== selectedUser) {
-                const filteredUsers = state.users.filter((user) => user.usern !== selectedUser)
-                if (filteredUsers.length === state.users.length) {
-                    state.errorMsg = 'This user does not exist, please change this and try again.'
-                } else {
-                    state.users = filteredUsers
-                    state.errorMsg = 'User deleted!'
-                }
-            } else if (state.signedIn.usern === selectedUser){
-                state.errorMsg = 'You have entered your own username, please change this and try again.'
-            } 
+        DELETE_USER(state, filteredUsers) {
+            state.users = filteredUsers
         },
         LOG_IN(state) {
             state.isLoggedIn = true;
