@@ -377,5 +377,7 @@ select {
   border-radius: 5px;
 }
 
-
+textarea{
+  resize: vertical;
+}
 </style>

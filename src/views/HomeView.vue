@@ -14,7 +14,8 @@
     </div>
   </nav>
   <div class="home">
-    <h1> Blog Project! </h1>
+    <h1> Hello {{name}}!</h1>
+    <h3> Welcome to my blog project </h3>
   </div>
 </template>
 
@@ -26,8 +27,17 @@ export default {
   setup() {
     const store = useStore()
 
+    const name = store.state.signedIn.usern
 
-    
+    return {
+      name,
+    }
   }
 }
 </script>
+
+<style scoped>
+h3{
+  text-decoration: none;
+}
+</style>

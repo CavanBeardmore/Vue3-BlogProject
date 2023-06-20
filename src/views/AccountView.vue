@@ -17,6 +17,8 @@
   <!-- account details -->
   <div class="details">
     <h3> Your account </h3>
+    <p style="color: red" class="detail" v-show="changeError">{{changeError}}</p>
+    <p style="color: green" class="detail" v-show="changeMessage">{{changeMessage}}</p>
     <!-- Displays username -->
     <div v-show="!editname" class="detail-tile">
       <h4>Username:</h4>
@@ -80,14 +82,13 @@
     <br>
   </div>
 
-  <div class="user-posts">
+  <div class="user-posts" v-if="signedIn.acctype !== 'user'">
     <UserPosts />
   </div>
 
   <!-- if user is an admin it shows all the users and a delete account option -->
   <br>
-  <div class="accounts">
-    <div v-if="signedIn.acctype === 'admin'">
+  <div class="accounts" v-if="signedIn.acctype === 'admin'">
       <br v-show="!accounts">
       <button @click="toggleAccs" v-show="!accounts" class="viewer">View Accounts</button>
       <br>
@@ -125,9 +126,7 @@
             <br>
           </div>
         </div>
-      </div>
     </div>
-
 </div>
 </template>
 
@@ -157,6 +156,8 @@ export default {
     const selectedUser = ref('')
     const editedValue = ref('')
     const errorMsg = ref('')
+    const changeError = ref('')
+    const changeMessage = ref('')
 
     //boolean refs
     const editname = ref(false)
@@ -168,8 +169,6 @@ export default {
     function deleteUser() {
         if (signedIn.usern !== selectedUser.value) {
             const filteredUsers = userArray.value.filter((user) => user.usern !== selectedUser.value)
-            console.log(filteredUsers)
-            console.log(selectedUser.value)
             if (filteredUsers.length === userArray.value.length) {
                 errorMsg.value = 'This user does not exist, please change this and try again.'
             } else {
@@ -190,25 +189,52 @@ export default {
 
     //function that uses the edit mutation to change the users details
     function edit(value, newValue) {
-      console.log(value, newValue)
       if (value === 'email') {
-        if (validEmail(newValue) !== true) {
-        return
-      }
-      store.commit('EDIT', { value, newValue})
-      editedValue.value = ''
-      editname.value = false
-      editpass.value = false
-      editemail.value = false
+        if (!validEmail(newValue)) {
+          changeError.value = 'Email is invalid.'
+          changeMessage.value = ''
+        } else {
+          store.commit('EDIT', { value, newValue})
+          changeMessage.value = 'Change successful!'
+          changeError.value = ''
+          editedValue.value = ''
+          editname.value = false
+          editpass.value = false
+          editemail.value = false
+        }
+
+      } else if(value === 'usern'){
+        if (!matches(newValue)) {
+          changeError.value = 'Input is invalid'
+          changeMessage.value = ''
+        } else if (newValue !== signedIn.value.passw) {
+          store.commit('EDIT', { value, newValue })
+          changeMessage.value = 'Change successful!'
+          changeError.value = ''
+          editedValue.value = ''
+          editname.value = false
+          editpass.value = false
+          editemail.value = false
+        } else {
+          changeError.value = 'Username and password cannot be the same'
+          changeMessage.value = ''
+        }
       } else {
-        if (matches(newValue) !== true) {
-        return
-      }
-      store.commit('EDIT', { value, newValue })
-      editedValue.value = ''
-      editname.value = false
-      editpass.value = false
-      editemail.value = false
+        if (!matches(newValue)) {
+          changeError.value = 'Input is invalid'
+          changeMessage.value = ''
+        } else if (signedIn.value.usern !== newValue) {
+          store.commit('EDIT', { value, newValue })
+          changeMessage.value = 'Change successful!'
+          changeError.value = ''
+          editedValue.value = ''
+          editname.value = false
+          editpass.value = false
+          editemail.value = false
+        } else {
+          changeError.value = 'Username and password cannot be the same'
+          changeMessage.value = ''
+        }
       }
     }
 
@@ -261,7 +287,9 @@ export default {
       editemail,
       editpass,
       accounts,
-      toggleAccs
+      toggleAccs,
+      changeError,
+      changeMessage
       }
     
   }
@@ -274,7 +302,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .details {
