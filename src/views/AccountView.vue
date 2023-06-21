@@ -82,6 +82,7 @@
     <br>
   </div>
 
+  <!-- shows the posts that the user has created -->
   <div class="user-posts" v-if="signedIn.acctype !== 'user'">
     <UserPosts />
   </div>
@@ -90,12 +91,15 @@
   <br>
   <div class="accounts" v-if="signedIn.acctype === 'admin'">
       <br v-show="!accounts">
+      <!-- shows either close or view accounts button depending on if this is true or false -->
       <button @click="toggleAccs" v-show="!accounts" class="viewer">View Accounts</button>
       <br>
       <button @click="toggleAccs" v-show="accounts" class="closer">Close Accounts</button>
+      <!-- if accounts is true it shows the accounts -->
       <div v-show="accounts">
         <div>
           <h3> All accounts </h3>
+          <!-- delete user method -->
           <h6> Enter username of the user you wish to delete. </h6>
         </div>
         <div class="detail-tile">
@@ -104,8 +108,10 @@
           <button @click="deleteUser" class="closer"> Delete user </button>
         </div>
           <div class="detail-tile">
+            <!-- shows total amount of users -->
             <h4 class="detail"> Total users: {{totalUsers}} </h4>
           </div>
+          <!-- displays the data for each user within the users array -->
           <div v-for="user in users" :key="user.usern" class="detail-tile">
             <h4>Username: </h4>
             <p class="detail">
@@ -132,7 +138,7 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router'
 import { matches, validEmail } from '../regex'
 import UserPosts from '../components/UserPosts.vue';
@@ -167,7 +173,9 @@ export default {
 
     //delete user function
     function deleteUser() {
+      //ensures the user isn't deleting their own account
         if (signedIn.usern !== selectedUser.value) {
+          //filters through the users until it finds the user that was entered and then deletes them or if user doesnt exist produces an error
             const filteredUsers = userArray.value.filter((user) => user.usern !== selectedUser.value)
             if (filteredUsers.length === userArray.value.length) {
                 errorMsg.value = 'This user does not exist, please change this and try again.'
@@ -189,7 +197,9 @@ export default {
 
     //function that uses the edit mutation to change the users details
     function edit(value, newValue) {
+      //checks if the value the user wants to change is email
       if (value === 'email') {
+        //if it is email it checks if the email is valid
         if (!validEmail(newValue)) {
           changeError.value = 'Email is invalid.'
           changeMessage.value = ''
@@ -202,11 +212,13 @@ export default {
           editpass.value = false
           editemail.value = false
         }
-
+      //checks if the value the user wants to change is their username
       } else if(value === 'usern'){
+        //checks the username matches the regex
         if (!matches(newValue)) {
           changeError.value = 'Input is invalid'
           changeMessage.value = ''
+          //this checks if the new username is the same as the password
         } else if (newValue !== signedIn.value.passw) {
           store.commit('EDIT', { value, newValue })
           changeMessage.value = 'Change successful!'
@@ -220,9 +232,11 @@ export default {
           changeMessage.value = ''
         }
       } else {
+        //checks the password matches the regex
         if (!matches(newValue)) {
           changeError.value = 'Input is invalid'
           changeMessage.value = ''
+          //checks if username is the same as the new password
         } else if (signedIn.value.usern !== newValue) {
           store.commit('EDIT', { value, newValue })
           changeMessage.value = 'Change successful!'
