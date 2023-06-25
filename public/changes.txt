@@ -22,17 +22,10 @@ try changing add tag to object method /
 
 tag display method needs to be the same  /
 
-acc create input fields empty after creation * done
-
-clear search button and delete ppost button should be on the searched post * done
-
-wrong tag error when over 3 * done
-
 on accounts change the delete to a seach for user then an option to delete is seperate/or attached, 
 
 delete should add an are you sure option /
 
-can delete your own account from the accounts page? * done
 
 needs seperate delete account optiin for own account /
 
