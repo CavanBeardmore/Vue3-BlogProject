@@ -85,7 +85,6 @@ export default {
     //computed props
     const logInStatus = computed(() => store.getters.isLoggedIn)
     const users = computed(() => store.state.users)
-    const activeUser = computed(() => store.getters.getActiveUser)
 
     //refs for log in function
     const signInUser = ref('');
@@ -107,11 +106,11 @@ export default {
     //login function
     function logIn(username, password) {
 
-      //changes the activeuser intending to login within the store
-      store.commit('CHANGE_USER', { username, password });
+      //assigns username and password into an object so it can be evaluated
+      const activeUser = {usern: username, passw: password}
 
       //checks if the activeuser exists within the userbase
-      const filteredUsers = users.value.filter((user) => user.usern === activeUser.value.usern && user.passw === activeUser.value.passw)
+      const filteredUsers = users.value.filter((user) => user.usern === activeUser.usern && user.passw === activeUser.passw)
 
       //if filter check is true it runs login mutation changes router location to home and changes the signed in user accordingly
       //if filter check is false proides a login error
@@ -125,19 +124,24 @@ export default {
     }
 
     //create account function
-    function createAcc(username, email, password, role) {
+    function createAcc(usernameInput, emailInput, passwordInput, role) {
       //checks if the username entered already exists within the user base if false code runs else returns error
-      if (!doesUserExist(username, users.value)) {
+      if (!doesUserExist(usernameInput, users.value)) {
         //checks if username, password, and email pass the regex and that username and password are different 
         //then uses the create acc mutation commit to create the account 
-        if (matches(username) && username !== password) {
-          if (matches(password)) {
-            if (validEmail(email)) {
-              store.commit('CREATE_ACC', { username, email, password, role })
+        console.log(usernameInput, passwordInput)
+        if (matches(usernameInput) && usernameInput !== passwordInput) {
+          if (matches(passwordInput)) {
+            if (validEmail(emailInput)) {
+              store.commit('CREATE_ACC', { usernameInput, emailInput, passwordInput, role })
               accmessage.value = 'Account created!'
               unerror.value = ''
               emerror.value = ''
               pwerror.value = ''
+              username.value = ''
+              email.value = ''
+              password.value = ''
+
             } else {
               emerror.value = 'Email is invalid'
               pwerror.value = ''
@@ -168,7 +172,6 @@ export default {
       password,
       signInPass,
       signInUser,
-      activeUser,
       pwerror,
       unerror, 
       emerror,

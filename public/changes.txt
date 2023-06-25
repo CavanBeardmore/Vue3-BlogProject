@@ -10,9 +10,30 @@ toggling the view of search, view posts create posst needs to change to a univer
 
 }
 
+* easy
+/ medium
+# hard
 
-allow for posts search to have spaces and or lower or upper case characters
+allow for posts search to have spaces and or lower or upper case characters #
 
-delete post can probably use a computed function instead of reupdating user posts
+delete post can probably use a computed function instead of reupdating user posts #
 
-try changing add tag to object method
+try changing add tag to object method /
+
+tag display method needs to be the same  /
+
+acc create input fields empty after creation * done
+
+clear search button and delete ppost button should be on the searched post * done
+
+wrong tag error when over 3 * done
+
+on accounts change the delete to a seach for user then an option to delete is seperate/or attached, 
+
+delete should add an are you sure option /
+
+can delete your own account from the accounts page? * done
+
+needs seperate delete account optiin for own account /
+
+deleting a persons account should delete all their posts #

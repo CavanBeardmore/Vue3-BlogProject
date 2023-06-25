@@ -152,7 +152,7 @@ export default {
 
     //computed variables
     const users = computed(() => store.state.users);
-    const signedIn = computed(() => store.state.signedIn)
+    const signedIn = computed(() => store.getters.getSignedIn)
     const totalUsers = computed(() => store.getters.totalUsers)
 
     //store refs
@@ -174,7 +174,7 @@ export default {
     //delete user function
     function deleteUser() {
       //ensures the user isn't deleting their own account
-        if (signedIn.usern !== selectedUser.value) {
+        if (signedIn.value.usern !== selectedUser.value) {
           //filters through the users until it finds the user that was entered and then deletes them or if user doesnt exist produces an error
             const filteredUsers = userArray.value.filter((user) => user.usern !== selectedUser.value)
             if (filteredUsers.length === userArray.value.length) {
@@ -184,7 +184,7 @@ export default {
                 selectedUser.value = ''
                 errorMsg.value = 'User deleted!'
             }
-        } else if (signedIn.usern === selectedUser.value){
+        } else {
           errorMsg.value = 'You have entered your own username, please change this and try again.'
         } 
     }

@@ -25,9 +25,11 @@ import { ref, computed } from 'vue';
 
 export default {
   setup() {
+
     const store = useStore()
 
-    const name = store.state.signedIn.usern
+
+    const name = store.getters.getSignedIn.usern
 
     return {
       name,

@@ -16,13 +16,13 @@
   <div class="posts-container">
 
     <!-- create post section -->
-    <div class="create" v-if="user.acctype === 'creator' || user.acctype === 'admin'">
+    <div class="create" v-if="signedIn.acctype === 'creator' || signedIn.acctype === 'admin'">
       <div v-show="!create">
         <button @click="toggleCreate" class="viewer">Create Post</button>
       </div>
       <div v-show="create">
         <div class="button-container">
-          <button @click="toggleCreateExpand" class="button-close">Close</button>
+          <button @click="closeCreate" class="button-close">Close</button>
           <button @click="toggleExpand" v-show="!expand" class="button">Expand Posts</button>
           <button @click="toggleRequirements" class="button" v-show="!requirements"> View Requirements </button>
           <button @click="toggleRequirements" class="button-close" v-show="requirements">Hide Requirements</button>
@@ -41,7 +41,7 @@
         <input type="text" v-model="title" class="input-title" placeholder="Why do cats hate Mondays?">
         <br>
         <h4> Content </h4>
-        <textarea rows="4" cols="100" v-model="content" placeholder="Garfields influence upon the feline population cannot be underestimated."></textarea>
+        <textarea rows="15" cols="100" v-model="content" placeholder="Garfields influence upon the feline population cannot be underestimated."></textarea>
         <br>
         <h4> Content tags </h4>
         <input type="text" v-model="tag" class="cont-tags-input" placeholder="Enter a tag relevant to your post and click add tag.">
@@ -78,6 +78,8 @@
       <br>
       <button @click="searchFunc" class="viewer">Search</button>
       <br>
+      <br>
+      <button @click="clearSearch" class="closer">Clear</button>
       <h5 class="detail" style="color: red" v-show="searchError">{{searchError}}</h5>
       <div v-for="post in filteredSearch" :key="post.id">
         <SinglePost :post="post" />
@@ -117,7 +119,7 @@ export default {
 
     //computed
     const posts = computed(() => store.state.posts)
-    const user = computed(() => store.state.signedIn)
+    const signedIn = computed(() => store.getters.getSignedIn)
 
     //boolean refs
     const create = ref(false)
@@ -152,9 +154,13 @@ export default {
     function toggleExpand() {
       expand.value = !expand.value
     }
-    function toggleCreateExpand() {
+    function closeCreate() {
       expand.value = false
       create.value = false
+      tagError.value = ''
+      postMessage.value = ''
+      postError.value = ''
+      requirements.value = ''
     }
 
     //provides a snippet of post content to save space
@@ -194,6 +200,10 @@ export default {
       }
     }
 
+    function clearSearch() {
+      filteredSearch.value = ''
+    }
+
     /*publish post function takes the v-modeled refs as arguments and uses import funcs to check their lengths
     if they pass then they */
     function publishPost(titleInput, contentInput, tagsArr) {
@@ -203,6 +213,7 @@ export default {
         postError.value = ''
         title.value = ''
         content.value = ''
+        tagError.value= ''
         tags.value = []
       } else {
         postMessage.value = ''
@@ -232,17 +243,18 @@ export default {
     }
 
     function deleteTag() {
-      console.log(tags.value)
       if (tags.value.includes(deletedTag.value)) {
           const index = tags.value.indexOf(deletedTag.value)
           tags.value.splice(index, 1)
           deletedTag.value = ''
+        } else {
+          tagError.value = 'Tag does not exist.'
         }
     }
 
     return {
       posts,
-      user,
+      signedIn,
       toggleCreate,
       title,
       content,
@@ -267,7 +279,8 @@ export default {
       view,
       expand,
       toggleExpand,
-      toggleCreateExpand,
+      closeCreate,
+      clearSearch
   }
 }
 }

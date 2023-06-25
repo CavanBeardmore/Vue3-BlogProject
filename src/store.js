@@ -5,7 +5,6 @@ const store = createStore({
     state: {users: [],
             posts: [],
             signedIn: null,
-            activeUser: null,
             errorMsg: '',
             isLoggedIn: false,
             viewedPost: null
@@ -17,12 +16,8 @@ const store = createStore({
         isLoggedIn(state) {
             return state.isLoggedIn;
         },
-        getActiveUser(state){
-            return state.activeUser;
-        },
-        getAccount(state){
-            const user = state.users.filter((user) => user.usern === state.activeUser.usern);
-            return user[0];
+        getSignedIn(state) {
+            return state.signedIn
         }
     },
     mutations: {
@@ -36,18 +31,14 @@ const store = createStore({
             state.isLoggedIn = false;
         },
         CREATE_ACC(state, payload){
-            const { username, email, password, role } = payload;
+            const { usernameInput, emailInput, passwordInput, role } = payload;
             if (role === 'user') {
-                state.users.push(new User(username, email, password))
+                state.users.push(new User(usernameInput, emailInput, passwordInput))
             } else if (role === 'creator'){
-                state.users.push(new Creator(username, email, password))
+                state.users.push(new Creator(usernameInput, emailInput, passwordInput))
             } else {
-                state.users.push(new Admin(username, email, password))
+                state.users.push(new Admin(usernameInput, emailInput, passwordInput))
             }
-        },
-        CHANGE_USER(state, payload){
-            const { username, password } = payload;
-            state.activeUser = {usern: username, passw: password}
         },
         EDIT(state, payload){
             const { value, newValue } = payload;

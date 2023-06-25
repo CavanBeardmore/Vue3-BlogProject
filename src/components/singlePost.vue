@@ -15,10 +15,11 @@
         <div v-if="user.acctype === 'admin'">
         <p class="detail">ID: {{post.id}}</p>
         </div>
-    </div>
-    <div v-show="user.usern === post.creator || user.acctype === 'admin'">
-        <button @click="deletePost(post)" class="closer"> Delete </button>
-        <br>
+
+        <div v-show="user.usern === post.creator || user.acctype === 'admin'">
+            <button @click="deletePost(post)" class="closer"> Delete </button>
+            <br>
+        </div>
     </div>
     <br>
 </template>

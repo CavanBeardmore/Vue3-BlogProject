@@ -1,6 +1,6 @@
 <template>
 <!-- can only see this page if you're an admin or creator as user cannot create posts -->
-  <div v-if="user.acctype === 'admin' || user.acctype === 'creator'">
+  <div v-if="signedIn.acctype === 'admin' || signedIn.acctype === 'creator'">
     <br v-show="!ownPosts">
     <!-- shows either close or view buttons depending on if ownposts is true or false -->
     <button @click="showPosts" v-show="!ownPosts" class="viewer">View my posts</button>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <h6 class="detail"> {{post.date}} </h6>
-                    <div v-if="user.acctype === 'admin'">
+                    <div v-if="signedIn.acctype === 'admin'">
                         <p class="detail"> Post ID:{{post.id}}</p>
                     </div>
                     <!-- button options to delete, and edit the post -->
@@ -93,7 +93,7 @@ export default {
         const store = useStore()
 
         //computed 
-        const user = computed(() => store.state.signedIn)
+        const signedIn = computed(() => store.getters.getSignedIn)
         const posts = computed(() => store.state.signedIn.posts)
 
         //boolean refs
@@ -139,7 +139,7 @@ export default {
             //uses delete post mutation first
             store.commit('DELETE_POST', post)
             //updates the user posts array now this has been changed
-            const postsArray = posts.value.filter((post) => post.creator === user.value.usern)
+            const postsArray = posts.value.filter((post) => post.creator === signedIn.value.usern)
             userPosts.value = postsArray
         }
 
@@ -207,7 +207,7 @@ export default {
         return {
             ownPosts,
             showPosts,
-            user,
+            signedIn,
             deletePost,
             userPosts,
             editTitle,
