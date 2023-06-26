@@ -73,7 +73,14 @@ class Post{
         this.content = value
     }
 
+    changeTags(action, value) {
+        console.log(action, value)
+        action === 'ADD' ? this.tags.push(value) : this.tags.splice(value, 1)
+    }
+
 }
 
 export { User, Creator, Admin, Post }
+
+
 

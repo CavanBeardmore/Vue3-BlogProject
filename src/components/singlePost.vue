@@ -6,10 +6,8 @@
             <h6 class="date"> {{post.date}} </h6>
         </div>
         <h4 class="detail">{{snippet}}</h4>
-        <div class="tag-list"> 
-            <p class="tag">#{{post.tags[0]}}</p>
-            <p class="tag">#{{post.tags[1]}}</p>
-            <p class="tag">#{{post.tags[2]}}</p>
+        <div v-for="tag in post.tags" :key="tag" class="tag-list"> 
+            <p class="tag">#{{tag}}</p>
         </div>
         
         <div v-if="user.acctype === 'admin'">

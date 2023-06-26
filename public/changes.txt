@@ -18,14 +18,11 @@ allow for posts search to have spaces and or lower or upper case characters #
 
 delete post can probably use a computed function instead of reupdating user posts #
 
-try changing add tag to object method /
-
 tag display method needs to be the same  /
 
 on accounts change the delete to a seach for user then an option to delete is seperate/or attached, 
 
 delete should add an are you sure option /
-
 
 needs seperate delete account optiin for own account /
 

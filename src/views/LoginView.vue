@@ -129,7 +129,6 @@ export default {
       if (!doesUserExist(usernameInput, users.value)) {
         //checks if username, password, and email pass the regex and that username and password are different 
         //then uses the create acc mutation commit to create the account 
-        console.log(usernameInput, passwordInput)
         if (matches(usernameInput) && usernameInput !== passwordInput) {
           if (matches(passwordInput)) {
             if (validEmail(emailInput)) {

@@ -151,7 +151,7 @@ export default {
                 //finds the tags index within the tag array
                 const index = editTags.value.indexOf(deletedTag.value)
                 //then removes it using the index
-                post.tags.splice(index, 1)
+                post.changeTags('DELETE', index)
                 deletedTag.value = ''
                 editTagError.value = ''
                 editMessage.value = 'Changes successful.'
@@ -173,7 +173,8 @@ export default {
                     //ensures there is less than 3 tags within the tag array
                 if (editTags.value.length < 3) {
                     //adds tag to the posts tags array
-                    post.tags.push(editTag.value)
+                    post.changeTags('ADD', editTag.value)
+                    console.log(post.tags)
                     editTag.value = ''
                     editTagError.value = ''
                     editMessage.value = 'Changes successful.'

@@ -53,7 +53,7 @@
         <input type="text" v-model="deletedTag" class="cont-tags-input" placeholder="Enter a tag you wish to delete.">
         <br>
         <br>
-        <button @click="deleteTag" class="closer">Delete Tag</button>
+        <button @click="deleteTag()" class="closer">Delete Tag</button>
         <div v-show="tags.length">
           <h5> Your Tags: </h5>
           <div v-for="tag in tags" :key="tag">
