@@ -79,6 +79,8 @@
     </div>
     <button @click="logOut" class="closer">Log out</button>
     <br>
+    <button @click="deleteSelf" class="closer"> Delete user </button>
+    <br>
     <br>
   </div>
 
@@ -100,12 +102,28 @@
         <div>
           <h3> All accounts </h3>
           <!-- delete user method -->
-          <h6> Enter username of the user you wish to delete. </h6>
+          <h6> Search for a user. </h6>
         </div>
         <div class="detail-tile">
           <h5 class="detail" style=" color: red " v-show="errorMsg"> {{errorMsg}} </h5>
-          <input type="text" v-model="selectedUser" placeholder="Username">
-          <button @click="deleteUser" class="closer"> Delete user </button>
+          <input type="text" v-model="enteredUser" placeholder="Username">
+          <button @click="searchForUser" class="closer"> Search </button>
+          <button @click="clearSearch" class="closer" v-show="searchedUser"> Clear </button>
+        </div>
+        <div class="detail-tile" v-show="searchedUser">
+          <h4>Username: </h4>
+          <p class="detail"> {{searchedUser.usern}} </p>
+          <h4>Email: </h4>
+          <p class="detail"> {{searchedUser.email}} </p>
+          <h4>Account type: </h4>
+          <p class="detail"> {{searchedUser.acctype}} </p>
+            <h4>Posts: </h4>
+            <p class="detail" v-if="searchedUser.posts">
+              {{searchedUser.posts.length}}
+            </p>
+            <p v-else class="detail">0</p>
+          <br>
+          <button @click="deleteUser(searchedUser.usern)" class="closer"> Delete user </button>
         </div>
           <div class="detail-tile">
             <!-- shows total amount of users -->
@@ -121,14 +139,17 @@
             <p class="detail">
               {{user.email}}
             </p>
-            <h4>Password: </h4>
-            <p class="detail">
-              {{user.passw}}
+            <h4>Posts: </h4>
+            <p class="detail" v-if="user.posts">
+              {{user.posts.length}}
             </p>
+            <p v-else class="detail">0</p>
             <h4>Account type: </h4>
             <p class="detail">
               {{user.acctype}}
             </p>
+            <br>
+            <button @click="deleteUser(user.usern)" class="closer"> Delete user </button>
             <br>
           </div>
         </div>
@@ -159,7 +180,9 @@ export default {
     const userArray = ref(users)
 
     // string refs
-    const selectedUser = ref('')
+    const enteredUser = ref('')
+    const searchedUser = ref('')
+    const postLength = ref('')
     const editedValue = ref('')
     const errorMsg = ref('')
     const changeError = ref('')
@@ -171,22 +194,42 @@ export default {
     const editpass = ref(false)
     const accounts = ref(false)
 
+    /*             FUNCTIONS              */
+
+    //searches for a user within the user base and returns this
+    function searchForUser() {
+      const filteredUsers = userArray.value.filter((user) => user.usern === enteredUser.value)
+      if (!filteredUsers.length) {
+        errorMsg.value = 'User not found.'
+      } else {
+        searchedUser.value = filteredUsers[0]
+        console.log(postLength.value)
+      }
+    }
+
+    function clearSearch() {
+      searchedUser.value = ''
+    }
+
     //delete user function
-    function deleteUser() {
+    function deleteUser(userToBeDeleted) {
       //ensures the user isn't deleting their own account
-        if (signedIn.value.usern !== selectedUser.value) {
+        if (signedIn.value.usern !== userToBeDeleted) {
           //filters through the users until it finds the user that was entered and then deletes them or if user doesnt exist produces an error
-            const filteredUsers = userArray.value.filter((user) => user.usern !== selectedUser.value)
-            if (filteredUsers.length === userArray.value.length) {
-                errorMsg.value = 'This user does not exist, please change this and try again.'
-            } else {
-                store.commit('DELETE_USER', filteredUsers)
-                selectedUser.value = ''
-                errorMsg.value = 'User deleted!'
-            }
+            console.log(userToBeDeleted)
+            const filteredUsers = userArray.value.filter((user) => user.usern !== userToBeDeleted)
+            console.log(filteredUsers)
+            store.commit('DELETE_USER', { filteredUsers, userToBeDeleted })
+            errorMsg.value = 'User deleted!'
         } else {
           errorMsg.value = 'You have entered your own username, please change this and try again.'
         } 
+    }
+
+    function deleteSelf() {
+      store.commit('LOG_OUT')
+      router.push('/')
+      store.commit('DELETE_SELF', signedIn.value.usern)
     }
 
     //logout function
@@ -286,7 +329,7 @@ export default {
 
     return {
       users,
-      selectedUser,
+      enteredUser,
       totalUsers, 
       signedIn, 
       errorMsg, 
@@ -303,7 +346,12 @@ export default {
       accounts,
       toggleAccs,
       changeError,
-      changeMessage
+      changeMessage,
+      searchForUser,
+      searchedUser,
+      postLength,
+      deleteSelf,
+      clearSearch
       }
     
   }

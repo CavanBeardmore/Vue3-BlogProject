@@ -5,7 +5,6 @@ const store = createStore({
     state: {users: [],
             posts: [],
             signedIn: null,
-            errorMsg: '',
             isLoggedIn: false,
             viewedPost: null
             },
@@ -21,8 +20,17 @@ const store = createStore({
         }
     },
     mutations: {
-        DELETE_USER(state, filteredUsers) {
+        DELETE_USER(state, payload) {
+            const { filteredUsers, userToBeDeleted } = payload
             state.users = filteredUsers
+            const posts = state.posts.filter((post) => post.creator !== userToBeDeleted)
+            state.posts = posts
+        },
+        DELETE_SELF(state, userToBeDeleted){
+            const index = state.users.findIndex((value) => value.usern === userToBeDeleted.usern)
+            state.users.splice(index, 1)
+            const posts = state.posts.filter((post) => post.creator !== userToBeDeleted)
+            state.posts = posts
         },
         LOG_IN(state) {
             state.isLoggedIn = true;
