@@ -79,7 +79,13 @@
     </div>
     <button @click="logOut" class="closer">Log out</button>
     <br>
-    <button @click="deleteSelf" class="closer"> Delete user </button>
+    <button @click="deleteAreYouSure(signedIn)" class="closer" v-show="!signedIn.deleteMessage"> Delete </button>
+    <div class="detail-tile" v-show="signedIn.deleteMessage">
+      <p class="detail">This action will permanently delete your account and posts.</p>
+      <p class="detail">Are you sure?</p>
+      <button @click="deleteSelf" class="closer"> Yes, delete. </button>
+      <button @click="deleteAreYouSure(signedIn)" class="viewer"> No, do not delete. </button>
+    </div>
     <br>
     <br>
   </div>
@@ -115,15 +121,26 @@
           <p class="detail"> {{searchedUser.usern}} </p>
           <h4>Email: </h4>
           <p class="detail"> {{searchedUser.email}} </p>
+          <div v-if="searchedUser.acctype !== 'user'">
+              <h4 v-if="searchedUser.posts">Number of posts: </h4>
+              <p class="detail" v-if="searchedUser.posts">
+                {{searchedUser.posts.length}}
+              </p>
+              <h4 v-if="searchedUser.posts"> Post titles: </h4>
+              <div v-for="post in searchedUser.posts" :key="post.id">
+                <p class="detail">{{post.title}}</p>
+              </div>
+          </div>
           <h4>Account type: </h4>
           <p class="detail"> {{searchedUser.acctype}} </p>
-            <h4>Posts: </h4>
-            <p class="detail" v-if="searchedUser.posts">
-              {{searchedUser.posts.length}}
-            </p>
-            <p v-else class="detail">0</p>
           <br>
-          <button @click="deleteUser(searchedUser.usern)" class="closer"> Delete user </button>
+          <button @click="deleteAreYouSure(searchedUser)" class="closer" v-show="!searchedUser.deleteMessage"> Delete user </button>
+          <div v-show="searchedUser.deleteMessage">
+            <p class="detail">This action will permanently delete {{searchedUser.usern}} and their posts.</p>
+            <p class="detail">Are you sure?</p>
+            <button @click="deleteUser(searchedUser.usern)" class="closer"> Yes, delete {{searchedUser.usern}}. </button>
+            <button @click="deleteAreYouSure(searchedUser)" class="viewer"> No, do not delete.</button>
+          </div>
         </div>
           <div class="detail-tile">
             <!-- shows total amount of users -->
@@ -139,17 +156,28 @@
             <p class="detail">
               {{user.email}}
             </p>
-            <h4>Posts: </h4>
-            <p class="detail" v-if="user.posts">
-              {{user.posts.length}}
-            </p>
-            <p v-else class="detail">0</p>
+            <div v-if="user.acctype !== 'user'">
+              <h4 v-if="user.posts.length">Number of posts: </h4>
+              <p class="detail" v-if="user.posts.length">
+                {{user.posts.length}}
+              </p>
+              <h4 v-if="user.posts.length"> Post titles: </h4>
+              <div v-for="post in user.posts" :key="post.id">
+                <p class="detail">{{post.title}}</p>
+              </div>
+            </div>
             <h4>Account type: </h4>
             <p class="detail">
               {{user.acctype}}
             </p>
             <br>
-            <button @click="deleteUser(user.usern)" class="closer"> Delete user </button>
+            <button @click="deleteAreYouSure(user)" class="closer" v-show="!user.deleteMessage"> Delete user </button>
+            <div v-show="user.deleteMessage">
+              <p class="detail">This action will permanently delete {{user.usern}} and their posts.</p>
+              <p class="detail">Are you sure?</p>
+              <button @click="deleteUser(user.usern)" class="closer"> Yes, delete {{user.usern}}. </button>
+              <button @click="deleteAreYouSure(user)" class="viewer"> No, do not delete.</button>
+            </div>
             <br>
           </div>
         </div>
@@ -203,12 +231,17 @@ export default {
         errorMsg.value = 'User not found.'
       } else {
         searchedUser.value = filteredUsers[0]
-        console.log(postLength.value)
       }
     }
 
+    //clears the searched users
     function clearSearch() {
       searchedUser.value = ''
+    }
+
+    //toggle the delete message property within the user object so the are you sure message displays
+    function deleteAreYouSure(user) {
+      user.toggleDeleteMessage()
     }
 
     //delete user function
@@ -216,13 +249,11 @@ export default {
       //ensures the user isn't deleting their own account
         if (signedIn.value.usern !== userToBeDeleted) {
           //filters through the users until it finds the user that was entered and then deletes them or if user doesnt exist produces an error
-            console.log(userToBeDeleted)
             const filteredUsers = userArray.value.filter((user) => user.usern !== userToBeDeleted)
-            console.log(filteredUsers)
             store.commit('DELETE_USER', { filteredUsers, userToBeDeleted })
             errorMsg.value = 'User deleted!'
         } else {
-          errorMsg.value = 'You have entered your own username, please change this and try again.'
+          errorMsg.value = 'You cannot delete your own account here.'
         } 
     }
 
@@ -351,7 +382,8 @@ export default {
       searchedUser,
       postLength,
       deleteSelf,
-      clearSearch
+      clearSearch,
+      deleteAreYouSure,
       }
     
   }

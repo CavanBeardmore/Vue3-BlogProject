@@ -4,6 +4,7 @@ class User {
         this.email = email;
         this.passw = passw;
         this.acctype = 'user';
+        this.deleteMessage = false
     }
 
     changeUsern(newName){
@@ -22,6 +23,10 @@ class User {
         if(this.passw !== newPassw && newPassw.length > 0){
             return this.passw = newPassw;
         } 
+    }
+
+    toggleDeleteMessage(){
+        this.deleteMessage = !this.deleteMessage
     }
 }
 

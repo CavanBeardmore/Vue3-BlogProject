@@ -20,10 +20,8 @@ delete post can probably use a computed function instead of reupdating user post
 
 tag display method needs to be the same  /
 
-on accounts change the delete to a seach for user then an option to delete is seperate/or attached, 
+feature additions:
 
-delete should add an are you sure option /
+when viewing accounts as admin allow for option to view titles of each post the user had made and an option to click to view these
 
-needs seperate delete account optiin for own account /
-
-deleting a persons account should delete all their posts #
+edit users details
