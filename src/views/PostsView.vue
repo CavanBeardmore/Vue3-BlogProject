@@ -81,7 +81,7 @@
       <br>
       <button @click="clearSearch" class="closer">Clear</button>
       <h5 class="detail" style="color: red" v-show="searchError">{{searchError}}</h5>
-      <div v-for="post in filteredSearch" :key="post.id">
+      <div v-for="post in matchingObjects" :key="post.id">
         <SinglePost :post="post" />
       </div>
     </div>
@@ -143,6 +143,7 @@ export default {
     //other refs
     const tags = ref([])
     const filteredSearch = ref()
+    const matchingObjects = ref([])
 
     //toggle funcs
     function toggleCreate() {
@@ -177,12 +178,19 @@ export default {
     with the value of the search or displays the error code */
     function searchFunc() {
       if (criteria.value === 'Creator') {
-          const creatorFiltered = posts.value.filter((post) => post.creator === searchInput.value)
-          filteredSearch.value = creatorFiltered
-          searchError.value = ''
-          if (!creatorFiltered.length) {
-          searchError.value = 'No results found'
-        }
+          const lowerCaseArray = posts.value.map( post => [ post.creator.toLowerCase(), post.id]);
+          const filteredSearch = lowerCaseArray.filter((v) => v[0] === searchInput.value.toLowerCase())
+          if (!filteredSearch.length) {
+            searchError.value = 'No results found'
+          } else {
+              searchError.value = ''
+              filteredSearch.forEach(([str, num]) => {
+                const foundObject = posts.value.find(obj => obj.id === num);
+                if (foundObject) {
+                  matchingObjects.value.push(foundObject);
+                }
+              });
+          }
       } else if (criteria.value === 'Tag') {
           const tagFiltered = posts.value.filter((post) => post.tags.includes(searchInput.value))
           filteredSearch.value = tagFiltered
@@ -201,7 +209,7 @@ export default {
     }
 
     function clearSearch() {
-      filteredSearch.value = ''
+      matchingObjects.value = ''
     }
 
     /*publish post function takes the v-modeled refs as arguments and uses import funcs to check their lengths
@@ -280,7 +288,8 @@ export default {
       expand,
       toggleExpand,
       closeCreate,
-      clearSearch
+      clearSearch,
+      matchingObjects
   }
 }
 }

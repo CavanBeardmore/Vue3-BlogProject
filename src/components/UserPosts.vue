@@ -14,18 +14,18 @@
                 <div v-show="!post.edit" class="post-detail-tile">
                     <!-- if edit is false for this post it shows the post details -->
                     <h2 class="detail">{{post.title}}</h2>
-                    <h4 class="detail">Created by {{post.creator}}</h4>
-                    <p class="detail">{{post.content}}</p>
-                    <div class="detail">
-                        <h4> Tags: </h4>
-                        <div v-for="tag in post.tags" :key="tag" class="tags">
-                            <h6> #{{tag}} </h6>
+                    <div class="post-info">
+                        <h4 class="created-by"> Created by {{post.creator}} </h4>
+                        <h6 class="date"> {{post.date}} </h6>
+                        <div v-if="signedIn.acctype === 'admin'">
+                            <p class="detail">Post ID: {{post.id}}</p>
                         </div>
                     </div>
-                    <h6 class="detail"> {{post.date}} </h6>
-                    <div v-if="signedIn.acctype === 'admin'">
-                        <p class="detail"> Post ID:{{post.id}}</p>
+                    <p class="detail">{{post.content}}</p>
+                    <div v-for="tag in post.tags" :key="tag" class="tag-list">
+                        <p class="tag"> #{{tag}} </p>
                     </div>
+                    <br>
                     <!-- button options to delete, and edit the post -->
                     <button @click="deletePost(post)" class="closer">Delete</button>
                     <br>

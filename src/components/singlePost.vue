@@ -4,15 +4,15 @@
         <div class="post-info">
             <h4 class="created-by"> Created by {{post.creator}} </h4>
             <h6 class="date"> {{post.date}} </h6>
+            <div v-if="user.acctype === 'admin'">
+                <p class="detail">Post ID: {{post.id}}</p>
+            </div>
         </div>
         <h4 class="detail">{{snippet}}</h4>
         <div v-for="tag in post.tags" :key="tag" class="tag-list"> 
             <p class="tag">#{{tag}}</p>
         </div>
         
-        <div v-if="user.acctype === 'admin'">
-        <p class="detail">ID: {{post.id}}</p>
-        </div>
 
         <div v-show="user.usern === post.creator || user.acctype === 'admin'">
             <button @click="deletePost(post)" class="closer"> Delete </button>

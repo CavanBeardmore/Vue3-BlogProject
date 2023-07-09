@@ -54,5 +54,4 @@ function doesExist(value, arrayOfValues) {
     }
 }
 
-
 export { doesUserExist, hasLength, lessThan, doesExist, moreThan, meetsLengthReqs }

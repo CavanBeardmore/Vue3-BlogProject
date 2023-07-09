@@ -18,10 +18,10 @@ allow for posts search to have spaces and or lower or upper case characters #
 
 delete post can probably use a computed function instead of reupdating user posts #
 
-tag display method needs to be the same  /
-
 feature additions:
 
 when viewing accounts as admin allow for option to view titles of each post the user had made and an option to click to view these
 
 edit users details
+
+tags needs max amount of characters
