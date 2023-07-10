@@ -155,6 +155,7 @@ export default {
     function toggleExpand() {
       expand.value = !expand.value
     }
+
     function closeCreate() {
       expand.value = false
       create.value = false
@@ -174,23 +175,18 @@ export default {
         router.push({ name: 'SinglePostView', params: { id: post } })
     }
 
-    /* search function, checks the value of criteria (selected in the drop down), and then runs code dependant on this and assigns the filteredSearch variable
+    /* search function, checks the value of criteria (selected in the drop down), and then runs code dependant on this, 
+    it will assign the value that is being searched for to lower case and all the options to lowercase 
+    so that they can be found even if case is incorrect, and assigns the matchingObjects ref
     with the value of the search or displays the error code */
     function searchFunc() {
       if (criteria.value === 'Creator') {
-          const lowerCaseArray = posts.value.map( post => [ post.creator.toLowerCase(), post.id]);
-          const filteredSearch = lowerCaseArray.filter((v) => v[0] === searchInput.value.toLowerCase())
-          if (!filteredSearch.length) {
+          const creatorFiltered = posts.value.filter( post => post.creator.toLowerCase() === searchInput.value.toLowerCase());
+          matchingObjects.value = creatorFiltered
+          searchError.value = ''
+          if (!creatorFiltered.length) {
             searchError.value = 'No results found'
-          } else {
-              searchError.value = ''
-              filteredSearch.forEach(([str, num]) => {
-                const foundObject = posts.value.find(obj => obj.id === num);
-                if (foundObject) {
-                  matchingObjects.value.push(foundObject);
-                }
-              });
-          }
+          } 
       } else if (criteria.value === 'Tag') {
           const tagFiltered = posts.value.filter((post) => post.tags.includes(searchInput.value.toLowerCase()))
           matchingObjects.value = tagFiltered
