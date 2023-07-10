@@ -128,7 +128,7 @@
               </p>
               <h4 v-if="searchedUser.posts"> Post titles: </h4>
               <div v-for="post in searchedUser.posts" :key="post.id">
-                <p class="detail">{{post.title}}</p>
+                <p class="post-title" @click="view(post.id)">{{post.title}}</p>
               </div>
           </div>
           <h4>Account type: </h4>
@@ -163,7 +163,7 @@
               </p>
               <h4 v-if="user.posts.length"> Post titles: </h4>
               <div v-for="post in user.posts" :key="post.id">
-                <p class="detail">{{post.title}}</p>
+                <p class="post-title" @click="view(post.id)">{{post.title}}</p>
               </div>
             </div>
             <h4>Account type: </h4>
@@ -223,6 +223,10 @@ export default {
     const accounts = ref(false)
 
     /*             FUNCTIONS              */
+
+    function view(post) {
+      router.push({ name: 'SinglePostView', params: { id: post } })
+    }
 
     //searches for a user within the user base and returns this
     function searchForUser() {
@@ -384,6 +388,7 @@ export default {
       deleteSelf,
       clearSearch,
       deleteAreYouSure,
+      view
       }
     
   }

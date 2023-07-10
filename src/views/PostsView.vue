@@ -32,6 +32,7 @@
           <p class="detail"> The title is 40 characters maximum and more than 5 characters minimum. </p>
           <p class="detail"> The content section is 6000 characters maximum and 500 characters minimum. </p>
           <p class="detail"> There is a minimum of 1 tag and a maximum of 3 tags. Tags must be lowercase.</p>
+          <p class="detail"> Tags have to be minimum 3 characters and maximum 12 characters.</p>
         </div>
         <br>
         <br>
@@ -237,18 +238,18 @@ export default {
     function addTag() {
       if (validTag(tag.value)) {
         if (!doesExist(tag.value, tags.value)) {
-          if (tags.value.length < 3) {
+          if (tags.value.length < 3 && lessThan(tag.value, 12)) {
             tags.value = tags.value.concat(tag.value)
             tag.value = ''
             tagError.value = ''
           } else {
-            tagError.value = 'You can only have up to 3 tags.'
+            tagError.value = 'You can only have up to 3 tags. They must be a minimum of 3 characters and 12 characters maximum.'
         }
         } else {
           tagError.value = 'This tag already exists.'
         }
       } else {
-        tagError.value = 'Tag must be lowercase, must compromise of only letters, and be a minimum of 3 characters long.'
+        tagError.value = 'Tag must be lowercase, and must compromise of only letters.'
       }
     }
 

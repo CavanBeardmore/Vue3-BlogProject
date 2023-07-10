@@ -87,6 +87,12 @@ export default {
     border-style: groove;
     }
 
+.post-title:hover{
+    transform: scale(1.015);
+    border-style: solid;
+    background-color: #becbd2;
+}
+
 .post-info {
     display: flex;
     flex-direction: row;

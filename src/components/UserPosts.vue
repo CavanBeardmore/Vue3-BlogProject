@@ -84,7 +84,7 @@
 <script>
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { meetsLengthReqs, doesExist } from '../helperFuncs'
+import { meetsLengthReqs, doesExist, lessThan, moreThan } from '../helperFuncs'
 import { validTag } from '../regex'
 
 export default {
@@ -171,15 +171,14 @@ export default {
                 //ensures tag doesnt already exist within the tag array
                 if (!doesExist(editTag.value, editTags.value)) {
                     //ensures there is less than 3 tags within the tag array
-                if (editTags.value.length < 3) {
+                if (editTags.value.length < 3 && lessThan(editTag.value, 12)) {
                     //adds tag to the posts tags array
                     post.changeTags('ADD', editTag.value)
-                    console.log(post.tags)
                     editTag.value = ''
                     editTagError.value = ''
                     editMessage.value = 'Changes successful.'
                 } else {
-                    editTagError.value = 'You can only have up to 3 tags.'
+                    editTagError.value = 'You can only have up to 3 tags. Each tag must be at least 3 characters long and 12 characetsr '
                     editMessage.value = ''
                 }
                 } else {
