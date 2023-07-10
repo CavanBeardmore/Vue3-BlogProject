@@ -31,7 +31,7 @@
           <h3> Requirements: </h3>
           <p class="detail"> The title is 40 characters maximum and more than 5 characters minimum. </p>
           <p class="detail"> The content section is 6000 characters maximum and 500 characters minimum. </p>
-          <p class="detail"> There is a minimum of 1 tag and a maximum of 3 tags.</p>
+          <p class="detail"> There is a minimum of 1 tag and a maximum of 3 tags. Tags must be lowercase.</p>
         </div>
         <br>
         <br>
@@ -192,15 +192,15 @@ export default {
               });
           }
       } else if (criteria.value === 'Tag') {
-          const tagFiltered = posts.value.filter((post) => post.tags.includes(searchInput.value))
-          filteredSearch.value = tagFiltered
+          const tagFiltered = posts.value.filter((post) => post.tags.includes(searchInput.value.toLowerCase()))
+          matchingObjects.value = tagFiltered
           searchError.value = ''
           if (!tagFiltered.length) {
           searchError.value = 'No results found'
         }
       } else if (criteria.value === 'Title') {
-        const titleFiltered = posts.value.filter((post) => post.title.split(' ').includes(searchInput.value))
-        filteredSearch.value = titleFiltered
+        const titleFiltered = posts.value.filter((post) => post.title.toLowerCase().split(' ').includes(searchInput.value.toLowerCase()))
+        matchingObjects.value = titleFiltered
         searchError.value = ''
         if (!titleFiltered.length) {
           searchError.value = 'No results found'
@@ -209,13 +209,19 @@ export default {
     }
 
     function clearSearch() {
-      matchingObjects.value = ''
+      matchingObjects.value = []
+      searchError.value = ''
     }
 
     /*publish post function takes the v-modeled refs as arguments and uses import funcs to check their lengths
     if they pass then they */
     function publishPost(titleInput, contentInput, tagsArr) {
-      if (lessThan(titleInput, 40) && moreThan(titleInput, 5) && lessThan(contentInput, 6000) && moreThan(contentInput, 500) && lessThan(tagsArr, 3) && moreThan(tagsArr, 1)) {
+      if (lessThan(titleInput, 40) && 
+          moreThan(titleInput, 5) && 
+          lessThan(contentInput, 6000) && 
+          moreThan(contentInput, 500) && 
+          lessThan(tagsArr, 3) && 
+          moreThan(tagsArr, 1)) {
         store.commit('PUBLISH_POST', { titleInput, contentInput, tagsArr })
         postMessage.value = 'Post has been published!'
         postError.value = ''
@@ -246,7 +252,7 @@ export default {
           tagError.value = 'This tag already exists.'
         }
       } else {
-        tagError.value = 'Tag must not be empty, must compromise of only letters, and be a minimum of 3 characters long.'
+        tagError.value = 'Tag must be lowercase, must compromise of only letters, and be a minimum of 3 characters long.'
       }
     }
 
