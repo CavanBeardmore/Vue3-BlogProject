@@ -14,15 +14,13 @@ toggling the view of search, view posts create posst needs to change to a univer
 / medium
 # hard
 
-delete post can probably use a computed function instead of reupdating user posts #
-
 feature additions:
-
-when viewing accounts as admin allow for option to view titles of each post the user had made and an option to click to view these
 
 edit users details
 
-tags needs max amount of characters
+button to enable search and create and then increase size of posts
+
+use v if searchedUser.posts and v else no posts on account search 
 
 
 

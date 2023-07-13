@@ -13,9 +13,9 @@
       <router-link to="/account">Account</router-link>
     </div>
   </nav>
-  <div class="home">
-    <h1> Hello {{name}}!</h1>
-    <h3> Welcome to my blog project </h3>
+  <div class="detail-tile">
+    <h1 class="detail"> Hello {{name}}!</h1>
+    <h3 class="detail"> Welcome to my blog project </h3>
   </div>
 </template>
 

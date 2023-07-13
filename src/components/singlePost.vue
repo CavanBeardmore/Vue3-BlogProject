@@ -5,10 +5,10 @@
             <h4 class="created-by"> Created by {{post.creator}} </h4>
             <h6 class="date"> {{post.date}} </h6>
             <div v-if="user.acctype === 'admin'">
-                <p class="detail">Post ID: {{post.id}}</p>
+                <h6 class="detail">Post ID: {{post.id}}</h6>
             </div>
         </div>
-        <h4 class="detail">{{snippet}}</h4>
+        <p class="detail">{{snippet}}</p>
         <div v-for="tag in post.tags" :key="tag" class="tag-list"> 
             <p class="tag">#{{tag}}</p>
         </div>
@@ -63,7 +63,7 @@ export default {
   .post{
     border-radius: 10px;
     background-color: #c9d4da;
-    width: 70%;
+    width: 300px;
     margin: 20px auto;
     border-style: ridge;
     padding: 10px;

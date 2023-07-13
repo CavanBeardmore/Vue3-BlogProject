@@ -18,7 +18,7 @@
                         <h4 class="created-by"> Created by {{post.creator}} </h4>
                         <h6 class="date"> {{post.date}} </h6>
                         <div v-if="signedIn.acctype === 'admin'">
-                            <p class="detail">Post ID: {{post.id}}</p>
+                            <h6 class="detail">Post ID: {{post.id}}</h6>
                         </div>
                     </div>
                     <p class="detail">{{post.content}}</p>
@@ -235,7 +235,7 @@ export default {
   background-color: lightgray;
   border-radius: 5px;
   border-style: groove;
-  width: 500px;
+  width: 300px;
   margin: 15px auto;
   padding: 15px;
 }

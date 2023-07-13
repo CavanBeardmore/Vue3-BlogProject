@@ -124,9 +124,9 @@
           <div v-if="searchedUser.acctype !== 'user'">
               <h4 v-if="searchedUser.posts">Number of posts: </h4>
               <p class="detail" v-if="searchedUser.posts">
-                {{searchedUser.posts.length}}
+                {{searchedPostsLength}}
               </p>
-              <h4 v-if="searchedUser.posts"> Post titles: </h4>
+              <h4 v-if="searchedPostsLength !== 0"> Post titles: </h4>
               <div v-for="post in searchedUser.posts" :key="post.id">
                 <p class="post-title" @click="view(post.id)">{{post.title}}</p>
               </div>
@@ -157,8 +157,8 @@
               {{user.email}}
             </p>
             <div v-if="user.acctype !== 'user'">
-              <h4 v-if="user.posts.length">Number of posts: </h4>
-              <p class="detail" v-if="user.posts.length">
+              <h4>Number of posts: </h4>
+              <p class="detail">
                 {{user.posts.length}}
               </p>
               <h4 v-if="user.posts.length"> Post titles: </h4>
@@ -215,6 +215,7 @@ export default {
     const errorMsg = ref('')
     const changeError = ref('')
     const changeMessage = ref('')
+    const searchedPostsLength = ref('')
 
     //boolean refs
     const editname = ref(false)
@@ -230,11 +231,14 @@ export default {
 
     //searches for a user within the user base and returns this
     function searchForUser() {
-      const filteredUsers = userArray.value.filter((user) => user.usern === enteredUser.value)
+      const filteredUsers = userArray.value.filter((user) => user.usern.toLowerCase() === enteredUser.value.toLowerCase())
       if (!filteredUsers.length) {
         errorMsg.value = 'User not found.'
       } else {
         searchedUser.value = filteredUsers[0]
+        if (searchedUser.value.acctype !== 'user') {
+          searchedPostsLength.value = searchedUser.value.posts.length
+        }
       }
     }
 
@@ -388,7 +392,8 @@ export default {
       deleteSelf,
       clearSearch,
       deleteAreYouSure,
-      view
+      view,
+      searchedPostsLength
       }
     
   }

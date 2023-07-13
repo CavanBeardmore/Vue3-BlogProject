@@ -204,15 +204,14 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
   .unit1{
-    margin-right: 10%;
-    margin-bottom: 5%;
+
   }
 
   .unit2 {
-    margin-left: 10%;
-    margin-bottom: 5%;
+
   }
 </style>

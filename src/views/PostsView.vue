@@ -42,7 +42,7 @@
         <input type="text" v-model="title" class="input-title" placeholder="Why do cats hate Mondays?">
         <br>
         <h4> Content </h4>
-        <textarea rows="15" cols="100" v-model="content" placeholder="Garfields influence upon the feline population cannot be underestimated."></textarea>
+        <textarea rows="15" cols="40" v-model="content" placeholder="Garfields influence upon the feline population cannot be underestimated."></textarea>
         <br>
         <h4> Content tags </h4>
         <input type="text" v-model="tag" class="cont-tags-input" placeholder="Enter a tag relevant to your post and click add tag.">
@@ -80,7 +80,7 @@
       <button @click="searchFunc" class="viewer">Search</button>
       <br>
       <br>
-      <button @click="clearSearch" class="closer">Clear</button>
+      <button @click="clearSearch" class="closer" v-show="matchingObjects.length">Clear</button>
       <h5 class="detail" style="color: red" v-show="searchError">{{searchError}}</h5>
       <div v-for="post in matchingObjects" :key="post.id">
         <SinglePost :post="post" />
@@ -143,7 +143,6 @@ export default {
 
     //other refs
     const tags = ref([])
-    const filteredSearch = ref()
     const matchingObjects = ref([])
 
     //toggle funcs
@@ -282,7 +281,6 @@ export default {
       searchInput,
       criteria,
       searchFunc,
-      filteredSearch,
       searchError,
       deleteTag,
       deletedTag,
@@ -302,49 +300,48 @@ export default {
 
   .posts-container{
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
   }
 
   .posts {
-    margin-top: .5em;
     flex-basis: 30%;
     flex-grow: 0;
     flex-shrink: 0;
-    background: #B7EEF8;
+    background: lightblue;
+    margin: 1%;
     border-style: ridge;
   }
 
   .search {
-    margin-top: .5em;
-    padding-top: 10px;
-    padding-bottom: 10px;
     flex-basis: 30%;
     flex-grow: 0;
     flex-shrink: 0;
-    background: #B7EEF8;
+    background: lightblue;
+    margin: 1%;
     border-style: ridge;
+    padding-top: 1em;
   }
 
   .create {
-    margin-top: .5em;
-    padding-top: 10px;
     flex-basis: 30%;
     flex-grow: 0;
     flex-shrink: 0;
-    background: #B7EEF8;
+    background: lightblue;
+    margin: 1%;
     border-style: ridge;
+    padding-top: 1em;
   }
 
   .input-title{
-    width: 400px;
+    width: 300px;
     padding-top: 5px;
     padding-bottom: 5px;
   }
 
   .cont-tags-input {
-    width: 400px;
+    width: 300px;
     padding-top: 5px;
     padding-bottom: 5px;
   }
